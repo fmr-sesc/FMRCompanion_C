@@ -34,7 +34,7 @@ example()
 while True:
     time.sleep(3)
     data = bus.read_byte(0x78)
-    #data <<= data
+    data <<= 8
     result = ((float(data) - 1638) / 5253) - 2.47
     print(result)
     time.sleep(3)
