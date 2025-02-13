@@ -1,5 +1,4 @@
-import peripherals.hcla02x5eb as hcla02x5eb 
-import peripherals.tca9548a as tca9548a
+from peripherals import HCLA02X5EB, TCA9548A
 import smbus2
 import time
 
@@ -10,9 +9,9 @@ TCA9548A_ADDR = 0x71
 # Setup I2C port 1
 bus = smbus2.SMBus(1)
 # Setup pressure sensor
-HCL_sens = hcla02x5eb.HCLA02X5EB(bus, HCLA02X5EB_ADDR)
+HCL_sens = HCLA02X5EB(bus, HCLA02X5EB_ADDR)
 # Setup Multiplexer
-TCA_multiplex = tca9548a.TCA9548A(bus, TCA9548A_ADDR)
+TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
 # Disable all I2C channels on multiplexer
 TCA_multiplex.set_control_register(0b00000000)
 
