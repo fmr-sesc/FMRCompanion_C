@@ -1,30 +1,36 @@
-import smbus2
+"""
+Tca9548a basic usage example
+"""
+import time
 
-I2C_BUS = 1     # Use I2C bus 1 on pi
-PC95_ADDR = 0x71# Adress of PCA95 multiplexer
-HCL_ADDR = 0x78
+import tca9548a
 
 
-bus = smbus2.SMBus(I2C_BUS)
+def example():
+    # init
+    i2c_address = 0x70
+    tca_driver = tca9548a.TCA9548A(i2c_address)
 
-def select_channel(channel):
-    assert 0 <= channel <= 7
-    bus.write_byte(PC95_ADDR, 1 << channel)
-    bus.close()
+    # disable all i2c channels
+    tca_driver.set_control_register(0b00000000)  # each bit controls a channel
 
-def read_channel():
-    value = bus.read_byte(HCL_ADDR)
-    value <<= 8
-    result = ((float(value)-1638)/5253) - 2.47
-    bus.close()
-    return result
-    
+    # enable channel 4
+    tca_driver.set_channel(4, 1)
 
-while True:
-    for i in range(4):
-        select_channel(i)
-        pressure = read_channel()
-        print(f"Sensor id: {i}")
-        print(i)
-        print(f"Pressure:")
-        print(pressure)
+    # read state of channel 4
+    ch4 = tca_driver.get_channel(4)
+    print("Channel 4 is set to {}".format(ch4))
+
+    # disable channel 4
+    tca_driver.set_channel(4, 0)
+
+    # read state of all channels
+    state = tca_driver.get_control_register()
+    print("Channel 4 is set to {0:b}".format(state))
+
+    # enable all channels
+    tca_driver.set_control_register(0xFF)
+
+
+if __name__ == '__main__':
+    example()
