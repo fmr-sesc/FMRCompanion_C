@@ -27,4 +27,4 @@ while True:
         print(f"Measured pressure at sensor {i+1} is {result:.2f} mbar")
         # Disable channel 4
         tca_driver.set_channel(i, 0)
-        time.sleep(1)
+    time.sleep(1)
