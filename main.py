@@ -1,5 +1,5 @@
-import hcla02x5eb
-import tca9548a
+import peripherals.hcla02x5eb as hcla02x5eb 
+import peripherals.tca9548a as tca9548a
 import smbus2
 import time
 
