@@ -23,15 +23,15 @@ def example():
     print("Channel 4 is set to {}".format(ch4))
 
     # disable channel 4
-    tca_driver.set_channel(2, 0)
+    #tca_driver.set_channel(2, 0)
 # init
 #i2c_address = 0x70
 #tca_driver = tca9548a.TCA9548A(i2c_address)
 bus = smbus2.SMBus(1)
 time.sleep(3)
+example()
 
 while True:
-    example()
     time.sleep(3)
     data = bus.read_byte(0x78)
     #data <<= data
