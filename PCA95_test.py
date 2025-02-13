@@ -32,6 +32,7 @@ time.sleep(1)
 
 while True:
     example()
+    time.sleep(1)
     data = bus.read_byte(0x78)
     data <<= data
     result = ((float(data) - 1638) / 5253) - 2.47
