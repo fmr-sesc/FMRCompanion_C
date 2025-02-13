@@ -1,6 +1,4 @@
-import time
 import peripherals.tca9548a as tca9548a
-import smbus2
 
 class HCLA02X5EB():
     def __init__(self, i2c_bus, address):
