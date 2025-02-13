@@ -24,7 +24,7 @@ while True:
         data = bus.read_byte(HCL_ADDR)
         data <<= 8
         result = ((float(data) - 1638) / 5253) - 2.47
-        print(f"Measured pressure at sensor {i} is {result:.2f} mbar")
+        print(f"Measured pressure at sensor {i+1} is {result:.2f} mbar")
         # Disable channel 4
         tca_driver.set_channel(i, 0)
         time.sleep(1)
