@@ -4,11 +4,8 @@ TCA9548A I2C switch driver, Texas instruments
 I2C SMBus protocol
 Manual: tca9548.pdf
 """
-import smbus2
-import logging
 
-# selected i2c channel on rpi
-I2C_CHANNEL = 1
+import logging
 
 
 class TCA9548A(object):
@@ -25,7 +22,7 @@ class TCA9548A(object):
             logging.error("No device found on specified address!")
             self.i2c_bus = None
         except:
-            logging.error("Bus on channel {} is not available.".format(I2C_CHANNEL))
+            logging.error("Bus on channel {} is not available.")
             logging.info("Available busses are listed as /dev/i2c*")
             self.i2c_bus = None
 

@@ -1,6 +1,3 @@
-"""
-Tca9548a basic usage example
-"""
 import time
 import tca9548a
 import smbus2
