@@ -25,7 +25,7 @@ def example():
     # disable channel 4
     tca_driver.set_channel(2, 0)
 
-bus = smbus2.SMBus(0x78)
+bus = smbus2.SMBus(1)
 
 while True:
     example()
