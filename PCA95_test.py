@@ -9,7 +9,7 @@ import smbus2
 
 def example():
     # init
-    i2c_address = 0x70
+    i2c_address = 0x71
     tca_driver = tca9548a.TCA9548A(i2c_address)
 
     # disable all i2c channels
