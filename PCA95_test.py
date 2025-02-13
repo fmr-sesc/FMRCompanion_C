@@ -5,24 +5,6 @@ import time
 import tca9548a
 import smbus2
 
-
-def example():
-    # init
-    i2c_address = 0x71
-    tca_driver = tca9548a.TCA9548A(i2c_address)
-
-    # disable all i2c channels
-    tca_driver.set_control_register(0b00000000)  # each bit controls a channel
-
-    # enable channel 4
-    tca_driver.set_channel(2, 1)
-
-    # read state of channel 4
-    ch4 = tca_driver.get_channel(2)
-    print("Channel 4 is set to {}".format(ch4))
-
-    # disable channel 4
-    #tca_driver.set_channel(2, 0)
 # init
 # I2C Adresses of Multiplexer and Sensors
 PCA95_ADDR = 0x71
@@ -36,7 +18,7 @@ tca_driver.set_control_register(0b00000000)
 time.sleep(3)
 
 while True:
-    for i in range(3):
+    for i in range(4):
         # Enable channel
         tca_driver.set_channel(i, 1)
         data = bus.read_byte(HCL_ADDR)
