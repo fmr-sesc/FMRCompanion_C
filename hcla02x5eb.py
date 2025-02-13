@@ -13,5 +13,5 @@ class HCLA02X5EB():
     def get_pressure_reading(self):
         data = self.i2c_bus.read_byte(self.i2c_address)
         data <<= 8
-        result = ((float(data) - self.Out_min) / self.S) - self.P_min
+        result = ((float(data) - self.Out_min) / self.S) + self.P_min
         return result
