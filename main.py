@@ -1,5 +1,4 @@
-from peripherals.hcla02x5eb import HCLA02X5EB
-from peripherals.tca9548a import TCA9548A
+from peripherals import HCLA02X5EB, TCA9548A
 import smbus2
 import time
 
