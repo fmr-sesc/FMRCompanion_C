@@ -12,12 +12,12 @@ I2C_CHANNEL = 1
 
 
 class TCA9548A(object):
-    def __init__(self, address):
+    def __init__(self, bus, address):
         """Init smbus channel and tca driver on specified address."""
         try:
             self.PORTS_COUNT = 8     # number of switches
 
-            self.i2c_bus = smbus2.SMBus(I2C_CHANNEL)
+            self.i2c_bus = bus
             self.i2c_address = address
             if self.get_control_register() is None:
                 raise ValueError
