@@ -27,12 +27,12 @@ def example():
 # init
 #i2c_address = 0x70
 #tca_driver = tca9548a.TCA9548A(i2c_address)
-#bus = smbus2.SMBus(1)
+bus = smbus2.SMBus(1)
 
 while True:
     example()
-    #data = bus.read_byte(0x78)
-    #data <<= data
-    #result = ((float(data) - 1638) / 5253) - 2.47
-    #print(result)
+    data = bus.read_byte(0x78)
+    data <<= data
+    result = ((float(data) - 1638) / 5253) - 2.47
+    print(result)
     time.sleep(1)
