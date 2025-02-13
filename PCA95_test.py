@@ -25,22 +25,14 @@ def example():
     # disable channel 4
     tca_driver.set_channel(2, 0)
 # init
-i2c_address = 0x70
-tca_driver = tca9548a.TCA9548A(i2c_address)
-bus = smbus2.SMBus(1)
+#i2c_address = 0x70
+#tca_driver = tca9548a.TCA9548A(i2c_address)
+#bus = smbus2.SMBus(1)
 
 while True:
-    # disable all i2c channels
-    tca_driver.set_control_register(0b00000000)  # each bit controls a channel
-
-    # enable channel 4
-    tca_driver.set_channel(3, 1)
-
-    # read state of channel 4
-    ch4 = tca_driver.get_channel(3)
-    print("Channel 4 is set to {}".format(ch4))
-    data = bus.read_byte(0x78)
-    data <<= data
-    result = ((float(data) - 1638) / 5253) - 2.47
-    print(result)
+    example()
+    #data = bus.read_byte(0x78)
+    #data <<= data
+    #result = ((float(data) - 1638) / 5253) - 2.47
+    #print(result)
     time.sleep(1)
