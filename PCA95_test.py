@@ -2,7 +2,7 @@ import time
 import tca9548a
 import smbus2
 
-# init
+# Init
 # I2C Adresses of Multiplexer and Sensors
 PCA95_ADDR = 0x71
 HCL_ADDR = 0x78
@@ -20,7 +20,7 @@ while True:
         tca_driver.set_channel(i, 1)
         data = bus.read_byte(HCL_ADDR)
         data <<= 8
-        result = ((float(data) - 1638) / 5253) - 2.47
+        result = ((float(data) - 1638) / 5243) - 2.5
         print(f"Measured pressure at sensor {i+1} is {result:.2f} mbar")
         # Disable channel 4
         tca_driver.set_channel(i, 0)
