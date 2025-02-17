@@ -22,7 +22,7 @@ logger.create_csv()
 
 
 while True:
-    for i in range(3):
+    for i in range(4):
         # Enable channel
         TCA_multiplex.set_channel(i, 1)
         pressure = HCL_sens.get_pressure_reading()
