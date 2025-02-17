@@ -45,8 +45,8 @@ class logger(object):
         for sensor_name in self.data_buffer.keys():
             if sensor_name not in existing_headers:
                 existing_headers.append(sensor_name)
-        print(existing_headers)
-        print(sensor_name)
+                new_header = True
+
         # Create a new row with the current timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_row = {header: "" for header in existing_headers}
@@ -59,6 +59,7 @@ class logger(object):
         # Write updated data to the CSV
         with open(self.file_path, mode="a", newline="") as file:
             writer = csv.DictWriter(file, fieldnames=existing_headers)
-            if file.tell() == 0:  # If file is empty, write the headers
+            if new_header == True:  # If file is empty, write the headers
                 writer.writeheader()
+                print("newheader")
             writer.writerow(new_row)
