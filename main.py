@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from peripherals import HCLA02X5EB, TCA9548A
 import smbus2
 import time
