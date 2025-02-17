@@ -18,7 +18,7 @@ TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
 TCA_multiplex.set_control_register(0b00000000)
 # Setup logger
 logger = logger(usb_directory)
-logger.create_csv
+logger.create_csv()
 
 
 while True:
@@ -30,5 +30,5 @@ while True:
         print(f"Measured pressure at sensor {i+1} is {pressure:.2f} mbar")
         # Disable channel
         TCA_multiplex.set_channel(i, 0)
-    logger.write_data_to_csv
+    logger.write_data_to_csv()
     time.sleep(1)
