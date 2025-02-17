@@ -26,7 +26,7 @@ while True:
         # Enable channel
         TCA_multiplex.set_channel(i, 1)
         pressure = HCL_sens.get_pressure_reading()
-        logger.log_data(f"Pressure Sensor {i}", pressure)
+        logger.log_data(f"Pressure Sensor {i+1}", pressure)
         print(f"Measured pressure at sensor {i+1} is {pressure:.2f} mbar")
         # Disable channel
         TCA_multiplex.set_channel(i, 0)
@@ -34,7 +34,7 @@ while True:
     # Enable channel
     TCA_multiplex.set_channel(3, 1)
     pressure = HCL_sens.get_pressure_reading()
-    logger.log_data(f"Pressure Sensor {3}", pressure)
+    logger.log_data(f"Pressure Sensor {4}", pressure)
     print(f"Measured pressure at sensor {3+1} is {pressure:.2f} mbar")
     # Disable channel
     TCA_multiplex.set_channel(3, 0)
