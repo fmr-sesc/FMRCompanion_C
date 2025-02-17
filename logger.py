@@ -72,4 +72,3 @@ class logger(object):
 
         # Clear buffer after writing
         self.data_buffer.clear()
-        print(f"Data written to CSV: {new_row}")
