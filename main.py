@@ -6,6 +6,7 @@ from logger import logger
 # Constants
 HCLA02X5EB_ADDR = 0x78
 TCA9548A_ADDR = 0x71
+usb_directory = "/media/FMRCompanion/INTENSO"
 
 # Setup I2C port 1
 bus = smbus2.SMBus(1)
@@ -16,7 +17,7 @@ TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
 # Disable all I2C channels on multiplexer
 TCA_multiplex.set_control_register(0b00000000)
 # Setup logger
-logger = logger("/media/FMRCompanion/INTENSO")
+logger = logger(usb_directory)
 logger.create_csv
 
 while True:
