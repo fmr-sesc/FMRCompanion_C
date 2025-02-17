@@ -45,7 +45,8 @@ class logger(object):
         for sensor_name in self.data_buffer.keys():
             if sensor_name not in existing_headers:
                 existing_headers.append(sensor_name)
-
+        print(existing_headers)
+        print(sensor_name)
         # Create a new row with the current timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         new_row = {header: "" for header in existing_headers}
