@@ -28,7 +28,7 @@ class Logger(object):
 
     def find_usb_drive(self):
         """Finds the first mounted USB drive and returns its path."""
-        base_path = "/media/pi/"  # Default USB mount location on Raspberry Pi
+        base_path = "/media/FMRCompanion/"  # Default USB mount location on Raspberry Pi
         if os.path.exists(base_path):
             usb_drives = os.listdir(base_path)  # List all mounted devices
             if usb_drives:
