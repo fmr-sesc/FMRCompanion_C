@@ -22,7 +22,7 @@ logger.create_csv()
 
 
 while True:
-    for i in range(4):
+    for i in range(3):
         # Enable channel
         TCA_multiplex.set_channel(i, 1)
         pressure = HCL_sens.get_pressure_reading()
@@ -31,4 +31,11 @@ while True:
         # Disable channel
         TCA_multiplex.set_channel(i, 0)
     logger.write_data_to_csv()
+    # Enable channel
+    TCA_multiplex.set_channel(3, 1)
+    pressure = HCL_sens.get_pressure_reading()
+    logger.log_data(f"Pressure Sensor {3}", pressure)
+    print(f"Measured pressure at sensor {3+1} is {pressure:.2f} mbar")
+    # Disable channel
+    TCA_multiplex.set_channel(3, 0)
     time.sleep(1)
