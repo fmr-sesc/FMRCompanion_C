@@ -8,6 +8,7 @@ class logger(object):
         self.time_stamp = 0
         self.data = []
         self.usb_path = usb_path
+        self.file_path = usb_path
         self.data_buffer = {}
         self.headers = ["Timestamp"]
 
@@ -23,7 +24,7 @@ class logger(object):
             writer.writerow(["Timestamp"]) 
 
         print(f"Created new log file: {file_path}")
-        return file_path
+        self.file_path = file_path
     
     def log_data(self, data_lable, value):
         """ Temporarily stores sensor data in memory. """
