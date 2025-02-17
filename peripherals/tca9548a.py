@@ -33,7 +33,7 @@ class TCA9548A(object):
             return value
         except:
             return None
-
+        
     def get_channel(self, ch_num):
         """Get channel state (specified with ch_num), return 0=disabled or 1=enabled."""
         if ch_num < 0 or ch_num > self.PORTS_COUNT:

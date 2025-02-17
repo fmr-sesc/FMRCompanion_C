@@ -20,6 +20,7 @@ TCA_multiplex.set_control_register(0b00000000)
 logger = logger(usb_directory)
 logger.create_csv
 
+
 while True:
     for i in range(4):
         # Enable channel

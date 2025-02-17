@@ -2,7 +2,7 @@ from datetime import datetime
 import csv
 import os
 
-class logger():
+class logger(object):
     def __init__(self, usb_path):
         """Init logger"""
         self.time_stamp = 0
