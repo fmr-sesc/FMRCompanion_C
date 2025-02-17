@@ -18,7 +18,7 @@ TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
 
 TCA_multiplex.set_control_register(0b00000000)
 # Setup Logger
-logger = Logger(usb_directory)
+logger = Logger()
 logger.create_csv()
 
 
