@@ -8,7 +8,7 @@ class logger(object):
         self.time_stamp = 0
         self.data = []
         self.usb_path = usb_path
-        self.file_path = usb_path
+        self.file_path = None
         self.data_buffer = {}
         self.headers = ["Timestamp"]
 
