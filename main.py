@@ -1,10 +1,7 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from peripherals import HCLA02X5EB, TCA9548A
 import smbus2
 import time
-from tools import logger
+from tools import Logger
 
 # Constants
 HCLA02X5EB_ADDR = 0x78
@@ -20,8 +17,8 @@ TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
 # Disable all I2C channels on multiplexer
 
 TCA_multiplex.set_control_register(0b00000000)
-# Setup logger
-logger = logger(usb_directory)
+# Setup Logger
+logger = Logger(usb_directory)
 logger.create_csv()
 
 
