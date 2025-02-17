@@ -3,14 +3,32 @@ import csv
 import os
 
 class Logger(object):
-    def __init__(self, usb_path):
+    def __init__(self):
         """Init logger"""
         self.time_stamp = 0
         self.data = []
-        self.usb_path = usb_path
         self.file_path = None
         self.data_buffer = {}
         self.headers = ["Timestamp"]
+
+        def find_usb_drive():
+            """Finds the first mounted USB drive and returns its path."""
+            base_path = "/media/FMRCompanion/"  # Default USB mount location on Raspberry Pi
+            if os.path.exists(base_path):
+                usb_drives = os.listdir(base_path)  # List all mounted devices
+                if usb_drives:
+                    return os.path.join(base_path, usb_drives[0])  # Return first detected USB path
+            return None  # No USB detected
+        
+        self.usb_path = find_usb_drive()
+
+        if self.usb_path:
+            print(f"USB drive detected at: {self.usb_path}")
+            # Example: Create a test file in USB
+            with open(os.path.join(self.usb_path, "test_log.txt"), "w") as file:
+                file.write("USB logging test successful!")
+        else:
+            print("No USB drive detected.")
 
     def create_csv(self):
         """ Creates a new CSV file with a timestamped name. """

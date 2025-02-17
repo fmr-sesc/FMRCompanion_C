@@ -8,6 +8,7 @@ class HCLA02X5EB():
         self.S = (27852 - 1638)/(2.5 - self.P_min)
         self.i2c_address = address
         self.i2c_bus = i2c_bus
+        
     def get_pressure_reading(self):
         data = self.i2c_bus.read_byte(self.i2c_address)
         data <<= 8

@@ -4,4 +4,3 @@
 
 smbus2
 mavsdk
-asyncio
