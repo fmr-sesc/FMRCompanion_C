@@ -60,6 +60,7 @@ class logger(object):
         with open(self.file_path, mode="a", newline="") as file:
             writer = csv.DictWriter(file, fieldnames=existing_headers)
             if new_header == True:  # If file is empty, write the headers
-                reader[0] = existing_headers
-                writer.writerows(reader)
+                data = list(reader)
+                data[0] = existing_headers
+                writer.writerows(data)
             writer.writerow(new_row)
