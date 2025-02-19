@@ -8,8 +8,7 @@ async def run():
     # Init the drone
     drone = System()
     print("Waiting for connection to Drone")
-    # system_address="udp://10.41.10.2:14540"
-    await drone.connect()
+    await drone.connect(system_address="udp://192.168.0.4:14550")
     print("Drone connected")
 
     # Start the tasks
