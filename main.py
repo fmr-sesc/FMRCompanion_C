@@ -6,7 +6,6 @@ from tools import Logger
 # Constants
 HCLA02X5EB_ADDR = 0x78
 TCA9548A_ADDR = 0x71
-usb_directory = "/media/FMRCompanion/INTENSO"
 
 # Setup I2C port 1
 bus = smbus2.SMBus(1)
