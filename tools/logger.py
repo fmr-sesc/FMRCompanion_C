@@ -3,13 +3,14 @@ import csv
 import os
 
 class Logger(object):
-    def __init__(self, usb_path=None):
+    def __init__(self, usb_path=None, sample_time=1):
         """Initialize logger. Detect USB drive if no path is provided."""
         self.time_stamp = 0
         self.data = []
         self.file_path = None
         self.data_buffer = {}
         self.headers = ["Timestamp"]
+        self.sample_time = sample_time
 
         # If no usb_path is given, automatically detect a mounted USB drive
         if usb_path is None:

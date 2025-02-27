@@ -1,34 +1,32 @@
-from peripherals import HCLA02X5EB, TCA9548A
 import smbus2
+import threading
 import time
 from tools import Logger
+from tools import UAVTracker
+from threads import sensorReadout
 
-# Constants
-HCLA02X5EB_ADDR = 0x78
-TCA9548A_ADDR = 0x71
-
-# Setup I2C port 1
+# Setup I2C port 1 of the RasPi
 bus = smbus2.SMBus(1)
-# Setup pressure sensor
-HCL_sens = HCLA02X5EB(bus, HCLA02X5EB_ADDR)
-# Setup Multiplexer
-TCA_multiplex = TCA9548A(bus, TCA9548A_ADDR)
-# Disable all I2C channels on multiplexer
-
-TCA_multiplex.set_control_register(0b00000000)
 # Setup Logger
 logger = Logger()
-logger.create_csv()
+# Setup drone object for telemetry
+drone = UAVTracker()
 
+sensorReadoutThread = threading.Thread(target=sensorReadout(logger, bus), daemon=True)
+updateDroneThread = threading.Thread(target=drone.run(), daemon=True)
+
+sensorReadoutThread.start()
+updateDroneThread.start()
+
+# Setup dummy variable to detect True false transition in logging switch
+previous_logging_state = False
 
 while True:
-    for i in range(4):
-        # Enable channel
-        TCA_multiplex.set_channel(i, 1)
-        pressure = HCL_sens.get_pressure_reading()
-        logger.log_data(f"Pressure Sensor {i+1}", pressure)
-        print(f"Measured pressure at sensor {i+1} is {pressure:.2f} mbar")
-        # Disable channel
-        TCA_multiplex.set_channel(i, 0)
-    logger.write_data_to_csv()
-    time.sleep(1)
+    if not previous_logging_state and drone.logging_enabled:
+        logger.create_csv
+        previous_logging_state = drone.logging_enabled
+    if drone.logging_enabled:
+        logger.log_data("Latitude", drone.latitude)
+        logger.log_data("Longitude", drone.longitude)
+        logger.write_data_to_csv()
+    time.sleep(logger.sample_time)
