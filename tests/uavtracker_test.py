@@ -35,9 +35,10 @@ class UAVTracker:
     async def getLoggingSwitch(self):
         """Continuously checks RC input for switch position changes and updates corresponding flag."""
         async for rc_status in self.drone.telemetry.rc_status():
-            channels = rc_status.channels
-            print(channels)
+            
+            print(rc_status)
             '''
+            channels = rc_status.channels
             # Ensure channel is available
             if len(channels) > self.logging_switch_channel:
                 # Read switch PWM value
