@@ -18,10 +18,10 @@ class UAVTracker:
         print("Drone Mavlink stream connected")
 
         # Keep all tasks running (Add new communication tasks here)
-        await self.getPosition()
-            
+        await asyncio.gather(
+            self.print_position()
             #self.getLoggingSwitch()
-        #)
+        )
     
     async def getPosition(self):
         """Continuously updates latitude and longitude from telemetry."""
@@ -49,6 +49,9 @@ class UAVTracker:
                 elif switch_value < 1500 and self.logging_enabled:
                     self.logging_enabled = False
             '''
+    async def print_position(self):
+        async for position in self.drone.telemetry.position():
+            print(position)
 
 drone =UAVTracker()
 asyncio.run(drone.run())
