@@ -54,16 +54,18 @@ class UAVTracker:
     async def print_position(self):
         async for position in self.drone.telemetry.position():
             print(position)
+    
+    def run_in_thread(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self.run())
 
-# Function to run the UAVTracker asynchronously in a separate thread
-def run_uav_tracker_in_thread():
-    tracker = UAVTracker()
-    loop = asyncio.new_event_loop()  # Create a new event loop
-    asyncio.set_event_loop(loop)     # Set the new event loop
-    loop.run_until_complete(tracker.run())  # Run the run() method
+
+
+tracker = UAVTracker()
 
 # Create and start the thread
-uav_thread = threading.Thread(target=run_uav_tracker_in_thread, daemon=True)
+uav_thread = threading.Thread(target=UAVTracker.run_in_thread, daemon=True)
 uav_thread.start()
 
 while True:
