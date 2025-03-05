@@ -19,8 +19,8 @@ class UAVTracker:
 
         # Keep all tasks running (Add new communication tasks here)
         await asyncio.gather(
-            self.getPosition(),
-            self.getLoggingSwitch()
+            self.getPosition()
+            #self.getLoggingSwitch()
         )
     
     async def getPosition(self):
