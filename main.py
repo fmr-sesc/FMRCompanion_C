@@ -33,6 +33,7 @@ while True:
     if dummy_enable:
         logger.log_data("Latitude", drone.latitude)
         logger.log_data("Longitude", drone.longitude)
+        print(logger.data_buffer)
         logger.write_data_to_csv()
         
     previous_logging_state = drone.logging_enabled
