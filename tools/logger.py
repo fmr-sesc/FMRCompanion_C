@@ -41,6 +41,8 @@ class Logger(object):
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = f"sensor_log_{timestamp}.csv"
         file_path = os.path.join(self.usb_path, filename)
+        print(file_path)
+        print(filename)
 
         # Create the file with just the timestamp column
         with open(file_path, mode="w", newline="") as file:
