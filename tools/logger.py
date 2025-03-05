@@ -14,11 +14,10 @@ class Logger(object):
         self.sample_time = sample_time
 
         # If no usb_path is given, automatically detect a mounted USB drive
-        while usb_path is None:
+        if usb_path is None:
             usb_path = self.find_usb_drive()
-        
-        # Small delay so that stick is propperly initialised on boot
-        time.sleep(1)
+            # Small delay so that stick is propperly initialised on boot
+            time.sleep(1)
 
         self.usb_path = usb_path  # Set the USB path (either provided or detected)
 
