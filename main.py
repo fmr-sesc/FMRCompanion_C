@@ -1,6 +1,7 @@
 import smbus2
 import threading
 import time
+import asyncio
 from tools import Logger
 from tools import UAVTracker
 from threads import sensorReadout
@@ -14,7 +15,7 @@ drone = UAVTracker()
 
 # Initialise and start threads
 sensorReadoutThread = threading.Thread(target=sensorReadout(logger, bus), daemon=True)
-updateDroneThread = threading.Thread(target=drone.run(), daemon=True)
+updateDroneThread = threading.Thread(target=asyncio.run(drone.run()), daemon=True)
 
 sensorReadoutThread.start()
 updateDroneThread.start()
