@@ -30,23 +30,9 @@ class UAVTracker:
             self.longitude = position.longitude_deg
     
     async def getLoggingSwitch(self):
-        """Continuously checks RC input for switch position changes and updates corresponding flag."""
+        """Continuously checks arm status and enables logging when armed."""
         async for armed in self.drone.telemetry.armed():
-            print(armed)
-            '''
-            channels = rc_status.channels
-            # Ensure channel is available
-            if len(channels) > self.logging_switch_channel:
-                # Read switch PWM value
-                switch_value = channels[self.logging_switch_channel]
-
-                # Detect switch position and set logging flag
-                if switch_value > 1500 and not self.logging_enabled:
-                    self.logging_enabled = True
-
-                elif switch_value < 1500 and self.logging_enabled:
-                    self.logging_enabled = False
-            '''
+            self.logging_enabled = armed
 
     def run_in_thread(self):
         """Setup seperate event loop to run in thread"""
