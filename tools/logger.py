@@ -1,5 +1,4 @@
 from datetime import datetime
-import time
 import csv
 import os
 
@@ -16,8 +15,6 @@ class Logger(object):
         # If no usb_path is given, automatically detect a mounted USB drive
         if usb_path is None:
             usb_path = self.find_usb_drive()
-            # Small delay so that stick is propperly initialised on boot
-            time.sleep(1)
 
         self.usb_path = usb_path  # Set the USB path (either provided or detected)
 
@@ -44,8 +41,6 @@ class Logger(object):
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = f"sensor_log_{timestamp}.csv"
         file_path = os.path.join(self.usb_path, filename)
-        print(file_path)
-        print(filename)
 
         # Create the file with just the timestamp column
         with open(file_path, mode="w", newline="") as file:
