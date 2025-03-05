@@ -1,4 +1,5 @@
 from datetime import datetime
+import time
 import csv
 import os
 
@@ -13,8 +14,9 @@ class Logger(object):
         self.sample_time = sample_time
 
         # If no usb_path is given, automatically detect a mounted USB drive
-        if usb_path is None:
+        while usb_path is None:
             usb_path = self.find_usb_drive()
+            time.sleep(1)
 
         self.usb_path = usb_path  # Set the USB path (either provided or detected)
 
