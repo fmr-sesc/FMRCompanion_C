@@ -14,10 +14,10 @@ logger = Logger()
 drone = UAVTracker()
 
 # Initialise sensor Thread
-#sensorReadoutThread = threading.Thread(target=sensorReadout(logger, bus), daemon=True)
+sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus), daemon=True)
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True)
 
-#sensorReadoutThread.start()
+sensorReadoutThread.start()
 updateDroneThread.start()
 
 # Setup dummy variable to detect True False transition in logging switch
