@@ -65,7 +65,7 @@ class UAVTracker:
 tracker = UAVTracker()
 
 # Create and start the thread
-uav_thread = threading.Thread(target=UAVTracker.run_in_thread, daemon=True)
+uav_thread = threading.Thread(target=tracker.run_in_thread, daemon=True)
 uav_thread.start()
 
 while True:
