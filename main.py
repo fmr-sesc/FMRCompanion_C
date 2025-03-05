@@ -15,15 +15,7 @@ drone = UAVTracker()
 
 # Initialise sensor Thread
 sensorReadoutThread = threading.Thread(target=sensorReadout(logger, bus), daemon=True)
-
-# Initialise asyncio drone Thread
-def run_uav_tracker_in_thread():
-    drone = UAVTracker()
-    loop = asyncio.new_event_loop()  # Create a new event loop
-    asyncio.set_event_loop(loop)     # Set the new event loop
-    loop.run_until_complete(drone.run())  # Run the run() method
-
-updateDroneThread = threading.Thread(target=run_uav_tracker_in_thread, daemon=True)
+updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True)
 
 sensorReadoutThread.start()
 updateDroneThread.start()

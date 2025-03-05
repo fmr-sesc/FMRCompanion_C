@@ -32,6 +32,7 @@ class UAVTracker:
     async def getLoggingSwitch(self):
         """Continuously checks RC input for switch position changes and updates corresponding flag."""
         async for rc_status in self.drone.telemetry.rc_status():
+            '''
             channels = rc_status.channels
             # Ensure channel is available
             if len(channels) > self.logging_switch_channel:
@@ -44,3 +45,10 @@ class UAVTracker:
 
                 elif switch_value < 1500 and self.logging_enabled:
                     self.logging_enabled = False
+            '''
+
+    def run_in_thread(self):
+        """Setup seperate event loop to run in thread"""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self.run())
