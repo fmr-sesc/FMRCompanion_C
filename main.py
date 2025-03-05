@@ -28,6 +28,7 @@ dummy_enable = True
 while True:
     # If logging switch changes from True to False create new csv
     if not previous_logging_state and dummy_enable:
+        print("Log created")
         logger.create_csv
     # Write collected data to csv (sensor data already loaded to buffer)
     if dummy_enable:
