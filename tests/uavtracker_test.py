@@ -28,8 +28,7 @@ class UAVTracker:
         async for position in self.drone.telemetry.position():
             self.latitude = position.latitude_deg
             self.longitude = position.longitude_deg
-            print(self.latitude)
-            print(self.longitude)
+            print(position)
     
     async def getLoggingSwitch(self):
         """Continuously checks RC input for switch position changes and updates corresponding flag."""
