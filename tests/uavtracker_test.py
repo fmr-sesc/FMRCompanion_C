@@ -1,5 +1,7 @@
 import asyncio
 from mavsdk import System
+import time
+import threading
 
 class UAVTracker:
     """Class to track the UAV's latitude and longitude in real-time."""
@@ -19,8 +21,8 @@ class UAVTracker:
 
         # Keep all tasks running (Add new communication tasks here)
         await asyncio.gather(
-            self.print_position()
-            #self.getLoggingSwitch()
+            self.print_position(),
+            self.getLoggingSwitch()
         )
     
     async def getPosition(self):
@@ -53,5 +55,17 @@ class UAVTracker:
         async for position in self.drone.telemetry.position():
             print(position)
 
-drone =UAVTracker()
-asyncio.run(drone.run())
+# Function to run the UAVTracker asynchronously in a separate thread
+def run_uav_tracker_in_thread():
+    tracker = UAVTracker()
+    loop = asyncio.new_event_loop()  # Create a new event loop
+    asyncio.set_event_loop(loop)     # Set the new event loop
+    loop.run_until_complete(tracker.run())  # Run the run() method
+
+# Create and start the thread
+uav_thread = threading.Thread(target=run_uav_tracker_in_thread, daemon=True)
+uav_thread.start()
+
+while True:
+    print("Blip")
+    time.sleep(1)
