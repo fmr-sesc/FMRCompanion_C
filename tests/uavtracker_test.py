@@ -22,9 +22,6 @@ class UAVTracker:
             self.getPosition(),
             self.getLoggingSwitch()
         )
-
-        while True:
-            await asyncio.sleep(3)
     
     async def getPosition(self):
         """Continuously updates latitude and longitude from telemetry."""
