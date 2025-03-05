@@ -24,7 +24,7 @@ class UAVTracker:
         )
 
         while True:
-            await asyncio.sleep(1)
+            await asyncio.sleep(3)
     
     async def getPosition(self):
         """Continuously updates latitude and longitude from telemetry."""
@@ -36,6 +36,8 @@ class UAVTracker:
         """Continuously checks RC input for switch position changes and updates corresponding flag."""
         async for rc_status in self.drone.telemetry.rc_status():
             channels = rc_status.channels
+            print(channels)
+            '''
             # Ensure channel is available
             if len(channels) > self.logging_switch_channel:
                 # Read switch PWM value
@@ -47,6 +49,7 @@ class UAVTracker:
 
                 elif switch_value < 1500 and self.logging_enabled:
                     self.logging_enabled = False
+            '''
 
 drone =UAVTracker()
 asyncio.run(drone.run())
