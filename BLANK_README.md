@@ -72,7 +72,7 @@ Download and install RasPi imager and setup according to this [guide](https://ww
 
 Start the flashed RasPi and open a terminal either using SSH which has to be [setup](https://randomnerdtutorials.com/raspberry-pi-remote-ssh-vs-code/) in VSCode and on the Pi accordingly, or by connecting a monitor and keyboard to the RasPi. (Hotkey to open terminal is Ctrl+Alt+T) The rest of the following setup is done in the opened terminal on the RasPi.
 
-1. Installing git
+1. **Installing git**
   ```sh
   cd
   sudo apt update
@@ -80,7 +80,7 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
   git config --global user.name "FMRCompanion"
   git config --global user.email "none"
    ```
-2. Create folder and clone repository
+2. **Create folder and clone repository**
   ```sh
   cd
   git init FMRCompanion
@@ -90,14 +90,14 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
   git checkout main
   git branch -D master
    ```
-3. Install miniconda
+3. **Install miniconda**
   ```sh
   cd Downloads # Navigate to downloads folder
   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
   bash Miniconda3-latest-Linux-aarch64.sh  # Install
   ```
 Enter --> Ctrl+X to open and accept licence, enter again to accept default folder. **After installation type yes to enable conda by default!** 
-4. Create new conda enviroment
+4. **Create new conda enviroment**
   ```sh
   cd
   cd FMRCompanion
@@ -110,16 +110,16 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   echo "conda activate FMRCompanion" >> ~/.bashrc # Set FMRCompanion as default enviroment
   source ~/.bashrc
   ```
-5. Enable I2C 
+5. **Enable I2C** 
   ```sh
   sudo raspi-config
   ```
   Interface Options --> I2C --> Enable
-6. Install I2C tools
+6. **Install I2C tools**
   ```sh
   sudo apt install -y i2c-tools
   ```
-7. Configure ethernet for mavlink communication
+7. **Configure ethernet for mavlink communication**
   Get available networks
   ```sh
   cd
@@ -150,7 +150,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   sudo systemctl enable NetworkManager
   sudo systemctl restart NetworkManager
   ```
-8. Enable the autostart of the main.py script on bootup
+8. **Enable the autostart of the main.py script on bootup**
   Create launcher.sh in home directory which will be used to define everything happening on boot:
   ```sh
   cd
