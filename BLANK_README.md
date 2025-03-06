@@ -63,7 +63,7 @@ Download and install RasPi imager and setup according to this [guide](https://ww
 <br />
 <div align="center">
   <a href="https://github.com/Mathis-Werner/FMRCompanion">
-    <img src="images/SetUpRasPi.png" alt="SetUpRasPi" width="80" height="40">
+    <img src="images/SetUpRasPi.png" alt="SetUpRasPi" width="800" height="400">
   </a>
 
 ### Setup in QGroundcontrol
