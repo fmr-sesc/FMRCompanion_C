@@ -124,7 +124,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   sudo apt install -y i2c-tools
   ```
 
-7. **Configure ethernet for mavlink communication**
+7. **Configure ethernet for mavlink communication**<br />
   Get available networks
   ```sh
   cd
@@ -156,7 +156,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   sudo systemctl restart NetworkManager
   ```
 
-8. **Enable the autostart of the main.py script on bootup**
+8. **Enable the autostart of the main.py script on bootup**<br />
   Create launcher.sh in home directory which will be used to define everything happening on boot:
   ```sh
   cd
@@ -177,6 +177,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   sudo ~/FMRCompanion/miniconda3/envs/FMRCompanion/pin/python main.py #Runs main.py using the FMRCompanion conda enviroment
   cd
   ```
+  Ctrl+X --> Y --> Enter to save
 
 ### Setup in QGroundcontrol
 
@@ -187,8 +188,8 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   * MAV_2_Mode = Onboard (Transmit default on board parameter set)
   * MAV_2_REMOTE_PRT = 14540 (Set port for companion computer)
   * MAV_2_UDP_PRT = 14540 (Set port for companion computer)
-4. **Setup the ethernet network**
-In QGroundcontrol click on QGroundcontrol symbol --> Analyze Tools --> MAVLink Console and enter:
+4. **Setup the ethernet network**<br />
+  In QGroundcontrol click on QGroundcontrol symbol --> Analyze Tools --> MAVLink Console and enter:
   ```sh
   echo DEVICE=eth0 > /fs/microsd/net.cfg
   echo BOOTPROTO=static >> /fs/microsd/net.cfg
