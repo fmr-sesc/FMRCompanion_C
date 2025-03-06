@@ -96,7 +96,20 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
   bash Miniconda3-latest-Linux-aarch64.sh  # Install
   ```
-Enter --> Ctrl+X to open and accept licence, Enter again to accept default folder, **After installation type yes to enable conda by default** 
+Enter --> Ctrl+X to open and accept licence, enter again to accept default folder. **After installation type yes to enable conda by default!** 
+4. Create new conda enviroment
+  ```sh
+  cd
+  cd FMRCompanion
+  conda create --name FMRCompanion python=3.9
+  conda activate FMRCompanion
+
+  # **At this point install all required packages defined in the section below**
+
+  conda config --set auto_activate_base false 
+  echo "conda activate FMRCompanion" >> ~/.bashrc # Set FMRCompanion as default enviroment
+  source ~/.bashrc
+  ```
 
 
 
