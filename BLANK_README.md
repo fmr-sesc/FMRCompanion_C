@@ -126,7 +126,12 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   nmcli con show
   ```
   The string in the collum Name, highlighted in the image below can variy and is refered to as "NetworkName" in the following code.
-
+<br />
+<div align="center">
+  <a href="https://github.com/Mathis-Werner/FMRCompanion">
+    <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="200">
+  </a>
+</div>
 
 
 ### Setup in QGroundcontrol
