@@ -58,7 +58,7 @@ This section gives a quick rundown on how to setup a brand new RasPi download th
 
 ### Setting up the RasPi
 
-Download and install RasPi imager and setup according to this [https://www.raspberrypi.com/documentation/computers/getting-started.html](guide).
+Download and install RasPi imager and setup according to this [guide](https://www.raspberrypi.com/documentation/computers/getting-started.html).
 * npm
   ```sh
   npm install npm@latest -g
