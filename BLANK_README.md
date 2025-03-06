@@ -125,13 +125,50 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   cd
   nmcli con show
   ```
-  The string in the collum Name, highlighted in the image below can variy and is refered to as "NetworkName" in the following code.
-<br />
-<div align="center">
-  <a href="https://github.com/Mathis-Werner/FMRCompanion">
-    <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="150">
-  </a>
-</div>
+  The string in the collum Name, highlighted in the image below can variy and is refered to as NetworkName in the following code.
+  <br />
+  <div align="center">
+    <a href="https://github.com/Mathis-Werner/FMRCompanion">
+      <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="150">
+    </a>
+  </div>
+  Set static ip in the network:
+  ```sh
+  nmcli con modify "NetworkName" ipv4.addresses 192.168.0.1/24 
+  nmcli con modify "NetworkName" ipv4.gateway 192.168.0.254 
+  nmcli con modify "NetworkName" ipv4.dns 8.8.8.8 
+  nmcli con modify "NetworkName" ipv4.method manual
+  ```
+  Restart NetworkManager:
+  ```sh
+  nmcli con down "NetworkName" && nmcli con up "NetworkName"
+  ```
+  Ensure NetworkManager starts on boot:
+  ```
+  sudo systemctl enable NetworkManager
+  sudo systemctl restart NetworkManager
+  ```
+8. Enable the autostart of the main.py script on bootup
+  Create launcher.sh in home directory which will be used to define everything happening on boot:
+  ```sh
+  cd
+  nano launcher.sh
+  ```
+  Open launcher.sh using nano:
+  ```sh
+  sudo nano launcher.sh
+  ```
+  In the file add the following code:
+  ```
+  #!/bin/sh
+  # launcher.sh
+  # Script to define execution on boot
+
+  cd 
+  cd ~/FMRCompanion
+  sudo ~/FMRCompanion/miniconda3/envs/FMRCompanion/pin/python main.py #Runs main.py using the FMRCompanion conda enviroment
+  cd
+  ```
 
 
 ### Setup in QGroundcontrol
