@@ -67,6 +67,8 @@ Download and install RasPi imager and setup according to this [guide](https://ww
   </a>
 </div>
 
+Start the flashed RasPi and open a terminal either using SSH which has to be [setup](https://randomnerdtutorials.com/raspberry-pi-remote-ssh-vs-code/) in VSCode and on the Pi accordingly, or by connecting a monitor and keyboard to the RasPi. (Hotkey to open terminal is Ctrl+Alt+T) The rest of the following setup is done in the opened terminal on the RasPi.
+
 ### Setup in QGroundcontrol
 
 1. Get a free API Key at [https://example.com](https://example.com)
