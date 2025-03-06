@@ -132,7 +132,9 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
       <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="150">
     </a>
   </div>
+
   Set static ip in the network:
+  
   ```sh
   nmcli con modify "NetworkName" ipv4.addresses 192.168.0.1/24 
   nmcli con modify "NetworkName" ipv4.gateway 192.168.0.254 
