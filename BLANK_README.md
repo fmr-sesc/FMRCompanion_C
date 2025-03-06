@@ -60,7 +60,7 @@ This section gives a quick rundown on how to setup a brand new RasPi download th
 
 Download and install RasPi imager and setup according to this [guide](https://www.raspberrypi.com/documentation/computers/getting-started.html). During setup ensure that both host name and user name highlighted in the image below are set to FMRCompanion, otherwise paths defind in the code wont initialise correctly. Setup Wifi according to your WiFi credentials (eduroam does not work).
 <div align="center">
-  <a href="https://github.com/Mathis-Werner/FMRCompanion">
+  <a href="https://github.com/github_username/repo_name">
     <img src="images/SetUpRasPi.png" alt="SetUpRasPi" width="80" height="40">
   </a>
 
