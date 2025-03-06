@@ -33,7 +33,7 @@
         <li><a href="#Setup in QGroundcontrol">Setup in QGroundcontrol</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#Code Overview">Code Overview</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -200,11 +200,25 @@ Reboot the flightcontroller
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Code Overview
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+``` sh
+/FMRCompanion
+│── main.py  # Main Script
+│── /tools   # Add all self developed classes to run with main here
+│   │── __init__.py 
+│   │── logger.py  # Contains the Logger class used to write csv
+│   │── uavtracker.py  # Contains the UAVTracker class used to handle communication with flightcontroller over mavlink
+│── /threads   # Add all sensors/external hardware here
+│   │── __init__.py
+│   │── sensorReadout.py # Function used in thread to handle all features involving attached sensorReadout
+│── /peripherals   # Add all sensors/external hardware here
+│   │── __init__.py
+│   │── hcla02x5eb.py # Contains the HCLA02X5EB pressure sensor class
+│   │── tca9548a.py # Contains the TCA9548A I2C multiplexer class
+│── /tests # Folder to included scripts for testing purposes
+│── /images # Folder with images to make this doc pretty
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
