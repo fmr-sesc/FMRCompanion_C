@@ -125,7 +125,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   cd
   nmcli con show
   ```
-  The string in the collum Name, highlighted in the image below can variy and is refered to as NetworkName in the following code.
+  The string in the collum Name, highlighted in the image below corresponding to the TYPE ethernet can variy and is refered to as NetworkName in the following code.
   <br />
   <div align="center">
     <a href="https://github.com/Mathis-Werner/FMRCompanion">
@@ -175,24 +175,25 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
 
 ### Setup in QGroundcontrol
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
-   ```
+1. **Flash the flightcontroller with the desired firmware**
+2. **Connect the flightcontroller to QGroundcontrol on a PC**
+3. **Go to parameters set and update the following parameters**
+  * MAV_2_Config = Ethernet (1000) (Declare Mavlink port 2 as Ethernet)
+  * MAV_2_Mode = Onboard (Transmit default on board parameter set)
+  * MAV_2_REMOTE_PRT = 14540 (Set port for companion computer)
+  * MAV_2_UDP_PRT = 14540 (Set port for companion computer)
+4. **Setup the ethernet network**
+In QGroundcontrol click on QGroundcontrol symbol --> Analyze Tools --> MAVLink Console and enter:
+  ```sh
+  echo DEVICE=eth0 > /fs/microsd/net.cfg
+  echo BOOTPROTO=static >> /fs/microsd/net.cfg
+  echo IPADDR=192.168.0.4 >> /fs/microsd/net.cfg 
+  echo NETMASK=255.255.255.0 >>/fs/microsd/net.cfg
+  echo ROUTER=192.168.0.254 >>/fs/microsd/net.cfg
+  echo DNS=192.168.0.254 >>/fs/microsd/net.cfg
+  netman update -i eth0
+  ```
+Reboot the flightcontroller
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
