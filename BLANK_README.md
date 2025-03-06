@@ -50,7 +50,7 @@
 <!-- ABOUT THE PROJECT -->
 ## FMRCompanion
 
-Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
+This project contains all required code for the inhouse FMRCompanion computer to assist the main PX4 flightcontroller. The companion is capable All code is written in python and ready to be implemented on a RasPi 5 according to the getting started section. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
