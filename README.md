@@ -230,7 +230,7 @@ Reboot the flightcontroller
 #### Description
 The logger is used to store all data to a external USB stick. It is designed to be used in a way where all recorded data is first loaded into a buffer using the log_data() function so that all recorded data at a time step can be written to the .csv at the same time labled by the current datetime. The logger will automatically try to detect a USB drive connected to the pi to use for storing the data. If desired the directory can explicitly specified during intialisation by for example:
 
-```sh
+```python
 logger = Logger("/media/FMRCompanion/NameOfYourStick")
 ```
 
@@ -241,7 +241,7 @@ logger = Logger("/media/FMRCompanion/NameOfYourStick")
 
 #### Example
 
-```sh
+```python
 logger = Logger() # Creates logger object automatically detecting attached drives
 logger.create_csv() # Creates a .csv on the drive in which to store all data
 data_sensor_a = read_sensor_a() # Read data from sensor
@@ -264,7 +264,7 @@ The uavtracker class is setup to both initialise a communication with the attach
 
 #### Example
 With the following example a communication with the flightcontroller can be initialised in a seperate thread with the drone.run_in_thread function continously updating the object attributes based on the values read from the flightcontroller.
-```sh
+```python
 drone = UAVTracker() # Create UAVTracker object
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True) # Create thread for UAVTracker object
 updateDroneThread.start() # Start thread
