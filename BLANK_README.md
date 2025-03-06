@@ -29,8 +29,8 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#Setting up the RasPi">Setting up the RasPi</a></li>
+        <li><a href="#Setup in QGroundcontrol">Setup in QGroundcontrol</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -45,7 +45,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## FMRCompanion
+## About The Project
 
 This project contains all required code for the inhouse FMRCompanion computer to assist the main PX4 flightcontroller. The companion is capable All code is written in python and ready to be implemented on a RasPi 5 according to the getting started section. 
 
@@ -57,7 +57,7 @@ This project contains all required code for the inhouse FMRCompanion computer to
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+### Setting up the RasPi
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
@@ -65,7 +65,7 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-### Installation
+### Setup in QGroundcontrol
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
