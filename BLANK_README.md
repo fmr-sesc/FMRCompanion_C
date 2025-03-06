@@ -54,12 +54,11 @@ This project contains all required code for the inhouse FMRCompanion computer to
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This section gives a quick rundown on how to setup a brand new RasPi download the repository and install all required software. The second part of the section explains the setup process required on the flightcontroller using qgroundcontrol to enable the mavlink communication between flightcontroller and Pi over ethernet using mavlink
 
 ### Setting up the RasPi
 
-This is an example of how to list things you need to use the software and how to install them.
+Download and install RasPi imager and setup according to this [https://www.raspberrypi.com/documentation/computers/getting-started.html](guide).
 * npm
   ```sh
   npm install npm@latest -g
