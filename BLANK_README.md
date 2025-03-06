@@ -110,7 +110,15 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   echo "conda activate FMRCompanion" >> ~/.bashrc # Set FMRCompanion as default enviroment
   source ~/.bashrc
   ```
-
+5. Enable I2C 
+  ```sh
+  sudo raspi-config
+  ```
+  Interface Options --> I2C --> Enable
+6. Install I2C tools
+  ```sh
+  sudo apt install -y i2c-tools
+  ```
 
 
 ### Setup in QGroundcontrol
