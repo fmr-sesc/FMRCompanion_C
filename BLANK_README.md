@@ -82,6 +82,7 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
    ```
 2. Create folder and clone repository
   ```sh
+  cd
   git init FMRCompanion
   cd FMRCompanion
   git remote add origin https://github.com/Mathis-Werner/FMRCompanion.git
@@ -89,6 +90,13 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
   git checkout main
   git branch -D master
    ```
+3. Install miniconda
+  ```sh
+  cd Downloads # Navigate to downloads folder
+  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+  bash Miniconda3-latest-Linux-aarch64.sh  # Install
+  ```
+Enter --> Ctrl+X to open and accept licence, Enter again to accept default folder, **After installation type yes to enable conda by default** 
 
 
 
