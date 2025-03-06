@@ -199,7 +199,7 @@ Reboot the flightcontroller
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- Code Overview -->
 ## Code Overview
 
 ``` sh
@@ -207,9 +207,9 @@ Reboot the flightcontroller
 │── main.py  # Main Script
 │── /tools   # Add all self developed classes to run with main here
 │   │── __init__.py 
-│   │── logger.py  # Contains the Logger class used to write csv
+│   │── logger.py  # Contains the Logger class used to write csv to USB Stick
 │   │── uavtracker.py  # Contains the UAVTracker class used to handle communication with flightcontroller over mavlink
-│── /threads   # Add all sensors/external hardware here
+│── /threads   # Contains all functions initialised as threads in the main script (except mavlink handling)
 │   │── __init__.py
 │   │── sensorReadout.py # Function used in thread to handle all features involving attached sensorReadout
 │── /peripherals   # Add all sensors/external hardware here
@@ -218,6 +218,31 @@ Reboot the flightcontroller
 │   │── tca9548a.py # Contains the TCA9548A I2C multiplexer class
 │── /tests # Folder to included scripts for testing purposes
 │── /images # Folder with images to make this doc pretty
+```
+### Logger Class Overview
+
+#### Description
+The logger is used to store all data to a external USB stick. It is designed to be used in a way where all recorded data is first loaded into a buffer using the log_data() function so that all recorded data at a time step can be written to the .csv at the same time labled by the current datetime. The logger will automatically try to detect a USB drive connected to the pi to use for storing the data. If desired the directory can explicitly specified during intialisation by for example:
+
+```sh
+logger = Logger("/media/FMRCompanion/NameOfYourStick")
+```
+
+#### Functions
+* create_csv(): Creates a new csv file with the naming convention "Sensor_log{Current Date/Time}" which will then be filled with data by write_data_to_csv()
+* log_data(data_lable, value): Loads data into the data_buffer with data_lable used later when writing the data to the file in the header and the value in the row corresponding to the of writing
+* write_data_to_csv(): Writes all data stored in the buffer by using log_data() to the csv file automatically creating a new row with the current timestamp and creating new headers when a new data_lable was created using log_data()
+
+#### Example
+
+```sh
+logger = Logger() # Creates logger object automatically detecting attached drives
+logger.create_csv() # Creates a .csv on the drive in which to store all data
+data_sensor_a = read_sensor_a() # Read data from sensor
+logger.log_data("Sensor_A", data_sensor_a) # Store data in buffer
+data_sensor_b = read_sensor_b()
+logger.log_data("Sensor_B", data_sensor_b) # Store data in buffer
+logger.write_data_to_csv() # Writes all data stored in the buffer into csv
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
