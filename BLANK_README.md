@@ -34,11 +34,9 @@
       </ul>
     </li>
     <li><a href="#Code Overview">Code Overview</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#Required python packages">Required python packages</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -104,7 +102,8 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   conda create --name FMRCompanion python=3.9
   conda activate FMRCompanion
 
-  # **At this point install all required packages defined in the section below**
+  # **At this point install all required packages defined in the section below for example**
+  # pip install smbus2
 
   conda config --set auto_activate_base false 
   echo "conda activate FMRCompanion" >> ~/.bashrc # Set FMRCompanion as default enviroment
@@ -248,16 +247,11 @@ logger.write_data_to_csv() # Writes all data stored in the buffer into csv
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+<!-- Required python packages -->
+## Required python packages
 
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+* smbus2
+* mavsdk
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
