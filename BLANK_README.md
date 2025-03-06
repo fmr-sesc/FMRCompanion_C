@@ -58,7 +58,8 @@ This section gives a quick rundown on how to setup a brand new RasPi download th
 
 ### Setting up the RasPi
 
-Download and install RasPi imager and setup according to this [guide](https://www.raspberrypi.com/documentation/computers/getting-started.html). During setup ensure that both host name and user name highlighted in the image below are set to FMRCompanion, otherwise paths defind in the code wont initialise correctly. Setup Wifi according to your WiFi credentials (eduroam does not work).
+#### Flashing RASPBERRY PI OS
+Download and install RasPi imager and setup according to this [guide](https://www.raspberrypi.com/documentation/computers/getting-started.html). Connect SD card to PC and select the model according to your RasPi version (only tested with RasPi 5 although others should work as well) and RASPBERRY PI OS (64-BIT) as the opperating system. During setup ensure that both host name and user name highlighted in the image below are set to FMRCompanion, otherwise paths defind in the code wont initialise correctly. Setup Wifi according to your WiFi credentials (eduroam does not work).
 
 <br />
 <div align="center">
@@ -67,7 +68,29 @@ Download and install RasPi imager and setup according to this [guide](https://ww
   </a>
 </div>
 
+#### Installing the repository and dependencys on the RasPi
+
 Start the flashed RasPi and open a terminal either using SSH which has to be [setup](https://randomnerdtutorials.com/raspberry-pi-remote-ssh-vs-code/) in VSCode and on the Pi accordingly, or by connecting a monitor and keyboard to the RasPi. (Hotkey to open terminal is Ctrl+Alt+T) The rest of the following setup is done in the opened terminal on the RasPi.
+
+1. Installing git
+  ```sh
+  cd
+  sudo apt update
+  sudo apt install git -y
+  git config --global user.name "FMRCompanion"
+  git config --global user.email "none"
+   ```
+2. Create folder and clone repository
+  ```sh
+  git init FMRCompanion
+  cd FMRCompanion
+  git remote add origin https://github.com/Mathis-Werner/FMRCompanion.git
+  git pull origin main
+  git checkout main
+  git branch -D master
+   ```
+
+
 
 ### Setup in QGroundcontrol
 
