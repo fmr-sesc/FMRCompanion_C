@@ -129,7 +129,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
 <br />
 <div align="center">
   <a href="https://github.com/Mathis-Werner/FMRCompanion">
-    <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="200">
+    <img src="images/SetUpNetwork.png" alt="SetUpRasPi" width="800" height="150">
   </a>
 </div>
 
