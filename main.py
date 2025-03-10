@@ -6,17 +6,22 @@ from tools import Logger
 from tools import UAVTracker
 from threads import sensorReadout
 
+# Sample times (s)
+sensorReadout_sample_time = 0.01
+logger_sample_time = 1
+
 # Setup I2C port 1 of the RasPi
 bus = smbus2.SMBus(1)
 # Setup Logger
-logger = Logger()
+logger = Logger(sample_time=logger_sample_time)
 # Setup drone object for telemetry
 drone = UAVTracker()
 
-# Initialise sensor Thread
-sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus), daemon=True)
+# Initialise threads
+sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, sensorReadout_sample_time), daemon=True)
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True)
 
+# Start threads
 sensorReadoutThread.start()
 updateDroneThread.start()
 

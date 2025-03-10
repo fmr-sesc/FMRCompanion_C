@@ -1,7 +1,7 @@
 from peripherals import HCLA02X5EB, TCA9548A
 import time
 
-def sensorReadout(logger, bus, HCLA02X5EB_ADDR=0x78, TCA9548A_ADDR=0x71, sample_time=0.01):
+def sensorReadout(logger, bus, sample_time=0.01, HCLA02X5EB_ADDR=0x78, TCA9548A_ADDR=0x71):
     '''Function to readout all sensor data and automatically write the data to the logger buffer'''
     # Setup pressure sensor
     HCL_sens = HCLA02X5EB(bus, HCLA02X5EB_ADDR)
