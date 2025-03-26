@@ -12,10 +12,11 @@ async def run():
     print("Drone connected")
 
     # Start the tasks
-    asyncio.ensure_future(print_battery(drone))
-    asyncio.ensure_future(print_gps_info(drone))
-    asyncio.ensure_future(print_in_air(drone))
-    asyncio.ensure_future(print_position(drone))
+    #asyncio.ensure_future(print_battery(drone))
+    #asyncio.ensure_future(print_gps_info(drone))
+    #asyncio.ensure_future(print_in_air(drone))
+    #asyncio.ensure_future(print_position(drone))
+    asyncio.ensure_future(getLoggingSwitch(drone))
 
     while True:
         await asyncio.sleep(1)
@@ -39,6 +40,12 @@ async def print_in_air(drone):
 async def print_position(drone):
     async for position in drone.telemetry.position():
         print(position)
+
+async def getLoggingSwitch(self):
+    """Continuously checks arm status and enables logging when armed."""
+    async for armed in self.drone.telemetry.armed():
+        self.logging_enabled = armed
+        print(self.logging_enabled)
 
 
 if __name__ == "__main__":
