@@ -44,8 +44,8 @@ async def print_position(drone):
 async def getLoggingSwitch(drone):
     """Continuously checks arm status and enables logging when armed."""
     async for armed in drone.telemetry.armed():
-        drone.logging_enabled = armed
-        print(drone.logging_enabled)
+        logging_enabled = armed
+        print(logging_enabled)
 
 
 if __name__ == "__main__":
