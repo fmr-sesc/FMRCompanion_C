@@ -15,32 +15,18 @@ async def run():
             print(f"-- Connected to drone!")
             break
 
-    entries = await get_entries(drone)
-    for entry in entries:
-        await download_log(drone, entry)
+    entries = await drone.log_files.get_entries()
+    if entries:
+        newest_entry = entries[-1]  # entries are sorted oldest → newest
+        await download_log(drone, newest_entry)
 
 
 async def download_log(drone, entry):
     date_without_colon = entry.date.replace(":", "-")
     filename = f"/home/FMRCompanion/ulog-{date_without_colon}.ulog"
-    print(f"Downloading: log {entry.id} from {entry.date} to {filename}")
-    previous_progress = -1
-    async for progress in drone.log_files.download_log_file(entry, filename):
-        new_progress = round(progress.progress*100)
-        if new_progress != previous_progress:
-            sys.stdout.write(f"\r{new_progress} %")
-            sys.stdout.flush()
-            previous_progress = new_progress
-    print()
-
-
-async def get_entries(drone):
-    entries = await drone.log_files.get_entries()
-    for entry in entries:
-        print(f"Log {entry.id} from {entry.date}")
-    return entries
+    async for _ in drone.log_files.download_log_file(entry, filename):
+        pass
 
 
 if __name__ == "__main__":
-    # Run the asyncio loop
     asyncio.run(run())
