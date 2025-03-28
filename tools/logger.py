@@ -41,8 +41,7 @@ class Logger(object):
 
     def create_csv(self, date_time):
         """ Creates a new CSV file with a timestamped name. """
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"sensor_log_{timestamp}.csv"
+        filename = f"sensor_log_{date_time}.csv"
         file_path = os.path.join(self.usb_path, filename)
 
         # Create the file with just the timestamp column
