@@ -47,6 +47,7 @@ class UAVTracker:
                     newest_entry = entries[-1]  # entries are sorted oldest → newest
                     self.current_log_datetime = newest_entry.date.replace(":", "-")
             self.previous_logging_state = self.logging_enabled
+            await asyncio.sleep(0.1)
 
     def trigger_log_download(self):
         """Call this to trigger download of log."""
