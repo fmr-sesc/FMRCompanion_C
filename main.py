@@ -32,8 +32,8 @@ previous_logging_state = False
 while True:
     # If logging switch changes from True to False create new csv
     if not previous_logging_state and drone.logging_enabled:
-        print(drone.current_log_datetime)
-        logger.create_csv()
+        log_date_time = drone.current_log_datetime
+        logger.create_csv(log_date_time)
     # Write collected data to csv (sensor data already loaded to buffer)
     if drone.logging_enabled:
         logger.log_data("Latitude", drone.latitude)

@@ -39,10 +39,9 @@ class Logger(object):
                 return os.path.join(base_path, usb_drives[0])  # Return first detected USB path
         return None  # No USB detected
 
-    def create_csv(self):
+    def create_csv(self, date_time):
         """ Creates a new CSV file with a timestamped name. """
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"sensor_log_{timestamp}.csv"
+        filename = f"sensor_log_{date_time}.csv"
         file_path = os.path.join(self.usb_path, filename)
 
         # Create the file with just the timestamp column
