@@ -11,6 +11,8 @@ class UAVTracker:
         self.logging_switch_channel = logging_switch_channel
         self.logging_enabled = False
         self.current_log_datetime = None
+        self._download_trigger = asyncio.Event()
+        self.previous_logging_state = False
 
     async def run(self):
         """Main function to handle communication with UAV."""
@@ -22,7 +24,7 @@ class UAVTracker:
         await asyncio.gather(
             self.getPosition(),
             self.getLoggingSwitch(),
-            self.downloadPX4Log()
+            self.updateLogDateTime()
         )
     
     async def getPosition(self):
@@ -32,16 +34,24 @@ class UAVTracker:
             self.longitude = position.longitude_deg
     
     async def getLoggingSwitch(self):
-        """Continuously checks arm status and enables logging when armed."""
+        """Continuously checks arm status and enables logging flag when armed."""
         async for armed in self.drone.telemetry.armed():
             self.logging_enabled = armed
 
-    async def downloadPX4Log(self):
-        entries = await self.drone.log_files.get_entries()
-        if entries:
-            newest_entry = entries[-1]  # entries are sorted oldest → newest
-            self.current_log_datetime = newest_entry.date.replace(":", "-")
-            print(self.current_log_datetime)
+    async def updateLogDateTime(self):
+        """When vehicle gets armed get date time of current log."""
+        while True:
+            if not self.previous_logging_state and self.logging_enabled:
+                entries = await self.drone.log_files.get_entries()
+                if entries:
+                    newest_entry = entries[-1]  # entries are sorted oldest → newest
+                    self.current_log_datetime = newest_entry.date.replace(":", "-")
+                    print(self.current_log_datetime)
+            self.previous_logging_state = self.logging_enabled
+
+    def trigger_log_download(self):
+        """Call this to trigger download of log."""
+        self._download_trigger.set()
 
     def run_in_thread(self):
         """Setup seperate event loop to run in thread"""
