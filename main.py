@@ -30,7 +30,7 @@ previous_logging_state = False
 
 # Main loop (mainly used for logging and to keep threads running)
 while True:
-    # If logging switch changes from True to False create new csv
+    # If logging switch changes from True to False create new csv with the date time of the log created by PX4
     if not previous_logging_state and drone.logging_enabled:
         log_date_time = drone.current_log_datetime
         logger.create_csv(log_date_time)
