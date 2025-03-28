@@ -10,6 +10,7 @@ class UAVTracker:
         self.drone_address = drone_address
         self.logging_switch_channel = logging_switch_channel
         self.logging_enabled = False
+        self.current_log_datetime = None
 
     async def run(self):
         """Main function to handle communication with UAV."""
@@ -20,7 +21,8 @@ class UAVTracker:
         # Keep all tasks running (Add new communication tasks here)
         await asyncio.gather(
             self.getPosition(),
-            self.getLoggingSwitch()
+            self.getLoggingSwitch(),
+            self.downloadPX4Log()
         )
     
     async def getPosition(self):
@@ -33,6 +35,13 @@ class UAVTracker:
         """Continuously checks arm status and enables logging when armed."""
         async for armed in self.drone.telemetry.armed():
             self.logging_enabled = armed
+
+    async def downloadPX4Log(self):
+        entries = await self.drone.log_files.get_entries()
+        if entries:
+            newest_entry = entries[-1]  # entries are sorted oldest → newest
+            self.current_log_datetime = newest_entry.date.replace(":", "-")
+            print(self.current_log_datetime)
 
     def run_in_thread(self):
         """Setup seperate event loop to run in thread"""
