@@ -32,10 +32,10 @@ previous_logging_state = False
 while True:
     # If logging switch changes from True to False create new csv with the date time of the log created by PX4
     if not previous_logging_state and drone.logging_enabled:
-        print("Hello World!")
-        log_date_time = drone.current_log_datetime
-        logger.create_csv(log_date_time)
-        print("log_date_time")
+        #print("Hello World!")
+        #log_date_time = drone.current_log_datetime
+        logger.create_csv()
+        #print("log_date_time")
     # Write collected data to csv (sensor data already loaded to buffer)
     if drone.logging_enabled:
         logger.log_data("Latitude", drone.latitude)
