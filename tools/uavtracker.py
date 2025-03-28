@@ -46,7 +46,6 @@ class UAVTracker:
                 if entries:
                     newest_entry = entries[-1]  # entries are sorted oldest → newest
                     self.current_log_datetime = newest_entry.date.replace(":", "-")
-                    print(self.current_log_datetime)
             self.previous_logging_state = self.logging_enabled
 
     def trigger_log_download(self):
