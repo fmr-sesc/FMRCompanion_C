@@ -33,7 +33,7 @@ previous_logging_state = False
 
 # Main loop (mainly used for logging and to keep threads running)
 while True:
-    # If logging switch changes from True to False create new csv with the date time of the log created by PX4
+    # On arm create new log file
     if not previous_logging_state and drone.logging_enabled:
         logger.create_csv()
     # Write collected data to csv (sensor data already loaded to buffer)
@@ -41,6 +41,9 @@ while True:
         logger.log_data("Latitude", drone.latitude)
         logger.log_data("Longitude", drone.longitude)
         logger.write_data_to_csv()
+    # On disarm download PX4 log
+    if not drone.logging_enabled and previous_logging_state:
+        drone.triggerPX4LogDownload()
         
     previous_logging_state = drone.logging_enabled
     time.sleep(logger.sample_time)
