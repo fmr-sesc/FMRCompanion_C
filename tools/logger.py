@@ -20,10 +20,6 @@ class Logger(object):
         filename = f"sensor_log_{date_time}.csv"
         file_path = os.path.join(self.usb_path, filename)
 
-        print("File path:", file_path)
-        print("Directory exists?", os.path.exists(os.path.dirname(file_path)))
-        print("Writable?", os.access(os.path.dirname(file_path), os.W_OK))
-
         # Create the file with just the timestamp column
         with open(file_path, mode="w", newline="") as file:
             writer = csv.writer(file)
