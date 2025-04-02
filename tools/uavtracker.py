@@ -4,12 +4,11 @@ from mavsdk import System
 
 class UAVTracker:
     """Class to track the UAV's latitude and longitude in real-time."""
-    def __init__(self, drone_address="udp://192.168.0.4:14540", logging_switch_channel=7, usb_path = None):
+    def __init__(self, drone_address="udp://192.168.0.4:14540", usb_path = None):
         self.drone = System()
         self.latitude = 0.0
         self.longitude = 0.0
         self.drone_address = drone_address
-        self.logging_switch_channel = logging_switch_channel
         self.logging_enabled = False
         self._download_trigger = asyncio.Event()
         self.usb_path = usb_path

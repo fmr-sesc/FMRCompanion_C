@@ -2,6 +2,15 @@ import time
 import os
 
 def detect_USB_drive():
+    """Finds the first mounted USB drive and returns its path."""
+    def find_usb_drive():
+        base_path = "/media/FMRCompanion/"  # Default USB mount location on Raspberry Pi
+        if os.path.exists(base_path):
+            usb_drives = os.listdir(base_path)  # List all mounted devices
+            if usb_drives:
+                return os.path.join(base_path, usb_drives[0])  # Return first detected USB path
+        return None  # No USB detected
+    
     usb_path = None
     # If no usb_path is given, automatically detect a mounted USB drive
     while usb_path is None:
@@ -15,12 +24,3 @@ def detect_USB_drive():
         return usb_path
     else:
         print("No USB drive detected.")
-
-    def find_usb_drive():
-        """Finds the first mounted USB drive and returns its path."""
-        base_path = "/media/FMRCompanion/"  # Default USB mount location on Raspberry Pi
-        if os.path.exists(base_path):
-            usb_drives = os.listdir(base_path)  # List all mounted devices
-            if usb_drives:
-                return os.path.join(base_path, usb_drives[0])  # Return first detected USB path
-        return None  # No USB detected
