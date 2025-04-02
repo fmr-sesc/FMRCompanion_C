@@ -18,7 +18,7 @@ bus = smbus2.SMBus(1)
 # Setup Logger
 logger = Logger(usb_path, sample_time=logger_sample_time)
 # Setup drone object for telemetry
-drone = UAVTracker()
+drone = UAVTracker(usb_path=usb_path)
 
 # Initialise threads
 sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, sensorReadout_sample_time), daemon=True)

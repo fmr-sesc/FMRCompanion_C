@@ -1,4 +1,5 @@
 import asyncio
+import os
 from mavsdk import System
 
 class UAVTracker:
@@ -11,7 +12,7 @@ class UAVTracker:
         self.logging_switch_channel = logging_switch_channel
         self.logging_enabled = False
         self._download_trigger = asyncio.Event()
-        self.file_path = usb_path
+        self.usb_path = usb_path
 
     async def run(self):
         """Main function to handle communication with UAV."""
@@ -54,9 +55,9 @@ class UAVTracker:
         if entries:
             newest_entry = entries[-1]
             date = newest_entry.date.replace(":", "-")
-            self.current_log_datetime = date
-            filename = f"/home/FMRCompanion/ulog-{date}.ulog"
-            async for _ in self.drone.log_files.download_log_file(newest_entry, filename):
+            filename = f"PX4_log_{date}.ulog"
+            file_path = os.path.join(self.usb_path, filename)
+            async for _ in self.drone.log_files.download_log_file(newest_entry, file_path):
                 pass
 
     def run_in_thread(self):
