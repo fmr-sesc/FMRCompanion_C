@@ -8,39 +8,15 @@ class Logger(object):
         """Initialize logger. Detect USB drive if no path is provided."""
         self.time_stamp = 0
         self.data = []
+        self.usb_path = usb_path
         self.file_path = None
         self.data_buffer = {}
         self.headers = ["Timestamp"]
         self.sample_time = sample_time
 
-        # If no usb_path is given, automatically detect a mounted USB drive
-        while usb_path is None:
-            usb_path = self.find_usb_drive()
-            # Small delay to allow the usb stick to initialise on boot
-            time.sleep(1)
-
-        self.usb_path = usb_path  # Set the USB path (either provided or detected)
-
-        if self.usb_path:
-            print(f"USB drive detected at: {self.usb_path}")
-            # Create a test file to verify access
-            test_file = os.path.join(self.usb_path, "test_log.txt")
-            with open(test_file, "w") as file:
-                file.write("USB logging test successful!")
-        else:
-            print("No USB drive detected.")
-
-    def find_usb_drive(self):
-        """Finds the first mounted USB drive and returns its path."""
-        base_path = "/media/FMRCompanion/"  # Default USB mount location on Raspberry Pi
-        if os.path.exists(base_path):
-            usb_drives = os.listdir(base_path)  # List all mounted devices
-            if usb_drives:
-                return os.path.join(base_path, usb_drives[0])  # Return first detected USB path
-        return None  # No USB detected
-
     def create_csv(self, date_time):
         """ Creates a new CSV file with a timestamped name. """
+        date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = f"sensor_log_{date_time}.csv"
         file_path = os.path.join(self.usb_path, filename)
 
