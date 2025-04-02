@@ -14,7 +14,7 @@ class Logger(object):
         self.headers = ["Timestamp"]
         self.sample_time = sample_time
 
-    def create_csv(self, date_time):
+    def create_csv(self):
         """ Creates a new CSV file with a timestamped name. """
         date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         filename = f"sensor_log_{date_time}.csv"
