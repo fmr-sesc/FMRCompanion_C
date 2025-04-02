@@ -10,7 +10,6 @@ class UAVTracker:
         self.longitude = 0.0
         self.drone_address = drone_address
         self.logging_enabled = False
-        self._download_trigger = asyncio.Event()
         self.usb_path = usb_path
 
     async def run(self):
@@ -18,6 +17,9 @@ class UAVTracker:
         print("Waiting for connection to Drone")
         await self.drone.connect(system_address=self.drone_address)
         print("Drone Mavlink stream connected")
+        
+        # Trigger to download log
+        self._download_trigger = asyncio.Event()
 
         # Keep all tasks running (Add new communication tasks here)
         await asyncio.gather(
