@@ -1,11 +1,11 @@
-# Import DroneKit-Python
-from dronekit import connect, Command, LocationGlobal
 from pymavlink import mavutil
-import time, sys, argparse, math
 
-# Connect to the Vehicle
-print("Connecting")
-connection_string = '127.0.0.1:14540'
-vehicle = connect(connection_string, wait_ready=True)
-print("Connected")
+# Start a connection listening on a UDP port
+the_connection = mavutil.mavlink_connection('udpin:localhost:14540')
 
+# Wait for the first heartbeat
+#   This sets the system and component ID of remote system for the link
+the_connection.wait_heartbeat()
+print("Heartbeat from system (system %u component %u)" % (the_connection.target_system, the_connection.target_component))
+
+# Once connected, use 'the_connection' to get and send messages
