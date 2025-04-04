@@ -5,6 +5,7 @@ import time, sys, argparse, math
 
 # Connect to the Vehicle
 print("Connecting")
-connection_string = '192.168.0.1:14540'
+connection_string = '127.0.0.1:14540'
 vehicle = connect(connection_string, wait_ready=True)
+print("Connected")
 
