@@ -43,5 +43,5 @@ while True:
         logger.log_data("Longitude", drone.longitude)
         logger.write_data_to_csv()
         
-    previous_logging_state = drone.logging_enabled
+    previous_logging_state = dummy
     time.sleep(logger.sample_time)
