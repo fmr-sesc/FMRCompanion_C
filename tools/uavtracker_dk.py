@@ -12,6 +12,7 @@ class UAVTracker_DK:
         self.sample_time = sample_time
 
     def run(self):
+        time.sleep(1)
         print("Starting UDP connection to Pixhawk")
         vehicle = connect(self.drone_address)
         print("Pixhawk connected")
