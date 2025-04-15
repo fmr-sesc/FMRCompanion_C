@@ -10,7 +10,7 @@ while True:
     print(f"Version: {vehicle.version}")
     #print(f"Version: {vehicle.location.global_frame}")
     #Create a message listener using the decorator.
-    @vehicle.on_message('GPS_INPUT')
+    @vehicle.on_message('RC_CHANNELS')
     def listener(self, name, message):
         print(message)
     time.sleep(0.001)
