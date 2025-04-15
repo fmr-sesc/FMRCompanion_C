@@ -8,6 +8,7 @@ vehicle = connect('udpout:192.168.0.4:14540')
 #   This sets the system and component ID of remote system for the link
 while True:
     print(f"Version: {vehicle.version}")
+    print(f"Version: {vehicle.location.global_frame}")
     time.sleep(1)
 
 # Once connected, use 'the_connection' to get and send messages
