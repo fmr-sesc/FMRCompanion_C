@@ -1,5 +1,6 @@
 from dronekit import connect
 import time
+from datetime import datetime
 
 class UAVTracker:
     """Class to track the UAV's latitude and longitude in real-time."""
@@ -24,5 +25,6 @@ class UAVTracker:
             #Create a message listener using the decorator.
             @vehicle.on_message('SYSTEM_TIME')
             def listener(self, name, message):
-                print(message)
+                timestamp = datetime.utcfromtimestamp(message.time_unix_usec / 1e6)
+                print(f"[SYSTEM_TIME] {timestamp} UTC")
             time.sleep(self.sample_time)
