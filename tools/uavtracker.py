@@ -21,7 +21,9 @@ class UAVTracker:
             self.latitude = vehicle.location.global_frame.lat
             self.longitude = vehicle.location.global_frame.lon
             self.logging_enabled = vehicle.armed
+            #Create a message listener using the decorator.
+            @vehicle.on_message('SYSTEM_TIME')
+            def listener(self, name, message):
+                print(message)
             print(self.latitude)
-            print(self.longitude)
-            print(self.logging_enabled)
             time.sleep(self.sample_time)
