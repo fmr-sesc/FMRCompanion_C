@@ -21,4 +21,7 @@ class UAVTracker_DK:
             self.latitude = vehicle.location.global_frame.lat
             self.longitude = vehicle.location.global_frame.lon
             self.logging_enabled = vehicle.armed
+            print(self.latitude)
+            print(self.longitude)
+            print(self.logging_enabled)
             time.sleep(self.sample_time)
