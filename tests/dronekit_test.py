@@ -13,6 +13,6 @@ while True:
     @vehicle.on_message('RC_CHANNELS')
     def listener(self, name, message):
         print(message)
-    time.sleep(0.001)
+    time.sleep(1)
 
 # Once connected, use 'the_connection' to get and send messages
