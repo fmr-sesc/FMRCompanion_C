@@ -1,18 +1,13 @@
-from dronekit import connect
+from tools import UAVTracker_DK
 import time
+import threading
 
-# Connect to the Vehicle (in this case a UDP endpoint)
-vehicle = connect('udpout:192.168.0.4:14540')
+drone = UAVTracker_DK()
 
-# Wait for the first heartbeat
-#   This sets the system and component ID of remote system for the link
+updateDroneThread = threading.Thread(target=drone.run, daemon=True)
+updateDroneThread.start()
+
 while True:
-    print(f"Version: {vehicle.version}")
-    #print(f"Version: {vehicle.location.global_frame}")
-    #Create a message listener using the decorator.
-    @vehicle.on_message('RC_CHANNELS')
-    def listener(self, name, message):
-        print(message)
-    time.sleep(1)
-
-# Once connected, use 'the_connection' to get and send messages
+    print(UAVTracker_DK.latitude)
+    print(UAVTracker_DK.longitude)
+    print(UAVTracker_DK.logging_enabled)
