@@ -25,5 +25,4 @@ class UAVTracker:
             @vehicle.on_message('SYSTEM_TIME')
             def listener(self, name, message):
                 print(message)
-            print(self.latitude)
             time.sleep(self.sample_time)
