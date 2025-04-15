@@ -31,14 +31,14 @@ updateDroneThread.start()
 
 # Setup dummy variable to detect True False transition in logging switch
 previous_logging_state = False
-
+dummy = True
 # Main loop (mainly used for logging and to keep threads running)
 while True:
     # On arm create new log file
-    if not previous_logging_state and drone.logging_enabled:
+    if not previous_logging_state and dummy:
         logger.create_csv()
     # Write collected data to csv (sensor data already loaded to buffer)
-    if drone.logging_enabled:
+    if dummy:
         logger.log_data("Latitude", drone.latitude)
         logger.log_data("Longitude", drone.longitude)
         logger.write_data_to_csv()
