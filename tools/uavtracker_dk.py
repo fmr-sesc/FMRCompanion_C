@@ -18,6 +18,6 @@ class UAVTracker_DK:
 
         while True:
             self.latitude = vehicle.location.global_frame.lat
-            self.latitude = vehicle.location.global_frame.lon
+            self.longitude = vehicle.location.global_frame.lon
             self.logging_enabled = vehicle.armed
             time.sleep(self.sample_time)
