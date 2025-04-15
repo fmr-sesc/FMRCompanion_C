@@ -18,9 +18,11 @@ class UAVTracker:
         print("Waiting for MAVSDK connection to Drone")
         await self.drone.connect(system_address=self.drone_address)
         print("MAVHSDK drone Mavlink stream connected")
+        '''
         print("Waiting for UDP connection to Drone")
         vehicle = connect('udpout:192.168.0.4:14540')
         print("Dronekit connection stablished")
+        '''
 
         
         # Trigger to download log
@@ -30,8 +32,7 @@ class UAVTracker:
         await asyncio.gather(
             self.getPosition(),
             self.getLoggingSwitch(),
-            self.downloadPX4LogLoop(),
-            self.dronekitPosition(vehicle=vehicle)
+            self.downloadPX4LogLoop()
         )
     
     async def getPosition(self):
