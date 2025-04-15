@@ -1,7 +1,7 @@
 from dronekit import connect
 
 # Connect to the Vehicle (in this case a UDP endpoint)
-vehicle = connect('udp:192.168.0.4:14540')
+vehicle = connect('udpout:192.168.0.4:14540')
 
 # Wait for the first heartbeat
 #   This sets the system and component ID of remote system for the link
