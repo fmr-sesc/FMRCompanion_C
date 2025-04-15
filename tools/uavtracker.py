@@ -30,7 +30,7 @@ class UAVTracker:
         await asyncio.gather(
             self.getPosition(),
             self.getLoggingSwitch(),
-            self.downloadPX4LogLoop()
+            self.downloadPX4LogLoop(),
             self.dronekitPosition(vehicle=vehicle)
         )
     
