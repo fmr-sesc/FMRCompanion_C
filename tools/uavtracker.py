@@ -1,7 +1,6 @@
 import asyncio
 import os
 from mavsdk import System
-from dronekit import connect
 
 class UAVTracker:
     """Class to track the UAV's latitude and longitude in real-time."""
@@ -15,15 +14,9 @@ class UAVTracker:
 
     async def run(self):
         """Main function to handle communication with UAV."""
-        print("Waiting for MAVSDK connection to Drone")
+        print("Waiting for connection to Drone")
         await self.drone.connect(system_address=self.drone_address)
-        print("MAVHSDK drone Mavlink stream connected")
-        '''
-        print("Waiting for UDP connection to Drone")
-        vehicle = connect('udpout:192.168.0.4:14540')
-        print("Dronekit connection stablished")
-        '''
-
+        print("Drone Mavlink stream connected")
         
         # Trigger to download log
         self._download_trigger = asyncio.Event()
@@ -40,11 +33,6 @@ class UAVTracker:
         async for position in self.drone.telemetry.position():
             self.latitude = position.latitude_deg
             self.longitude = position.longitude_deg
-    
-    async def dronekitPosition(self, vehicle):
-        """Continuously updates latitude and longitude from telemetry."""
-        print(vehicle.vehicle.location.global_frame)
-        await asyncio.sleep(1)
     
     async def getLoggingSwitch(self):
         """Continuously checks arm status and enables logging flag when armed."""
