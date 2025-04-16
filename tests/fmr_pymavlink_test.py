@@ -1,3 +1,6 @@
+import sys
+sys.path.append("/home/FMRCompanion/FMR-mavlink/pymavlink")
+
 from pymavlink.dialects.v10 import common as mavlink1
 from pymavlink import mavutil
 
