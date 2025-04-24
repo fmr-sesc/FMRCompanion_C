@@ -27,7 +27,7 @@ print("Drone Connected")
 while True:
     try:
         #print(master.recv_match().to_dict())
-        altitude = master.messages['ATTITUDE'].roll
+        altitude = master.messages["ATTITUDE"]
         print(altitude)
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
