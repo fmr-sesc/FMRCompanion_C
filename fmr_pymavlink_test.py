@@ -17,7 +17,7 @@ def wait_conn():
         time.sleep(0.5)
 
 # Start connection over UDP
-master = mavutil.mavlink_connection('udpout:192.168.0.4:14540', dialect='common')
+master = mavutil.mavlink_connection('udpout:192.168.0.4:14540', dialect="common")
 
 # Ping to initialise connection
 wait_conn()
