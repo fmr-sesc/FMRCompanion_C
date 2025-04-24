@@ -31,4 +31,5 @@ while True:
     except:
         pass
     master.mav.system_time_send(1, 2)
+    print(master.mav.__file__)
     time.sleep(0.01)
