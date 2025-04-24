@@ -26,7 +26,7 @@ print("Drone Connected")
 
 while True:
     try:
-        print(master.recv_match(type='SYSTEM_TIME').to_dict())
+        print(master.recv_match().to_dict())
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
