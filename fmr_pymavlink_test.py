@@ -1,3 +1,7 @@
+import os
+
+os.environ['MAVLINK_DIALECT'] = 'common'
+
 from pymavlink import mavutil
 
 # Start a connection listening on a UDP port
