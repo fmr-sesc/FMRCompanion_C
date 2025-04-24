@@ -26,10 +26,9 @@ print("Drone Connected")
 
 while True:
     try:
-        #print(master.recv_match().to_dict())
-        altitude = master.messages["ATTITUDE"]
-        print(altitude)
+        print(master.recv_match(type='ATTITUDE').to_dict())
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
+    master.mav.fmr_sensors_send(1, 2, 3, 4, 5)
     time.sleep(0.0001)
