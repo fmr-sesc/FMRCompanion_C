@@ -37,12 +37,11 @@ while True:
         pass
     print(dir(master.mav))
     # Create and send your custom message
-    msg = master.mav.fmr_sensors_encode(
+    msg = master.mav.fmr_sensors_send(
         sens_1=3.14,
         sens_2=2.71,
         sens_3=2.71,
         sens_4=2.71,
         sens_5=2.71
     )
-    master.mav.send(msg)
     time.sleep(0.01)
