@@ -25,7 +25,7 @@ wait_conn()
 while True:
     try:
         print(master.recv_match('SYSTEM_TIME').to_dict())
-        print(master.recv_match('LOCAL_POSITION_NED').to_dict())
+        #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
     time.sleep(1)
