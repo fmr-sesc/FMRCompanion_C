@@ -42,10 +42,15 @@ wait_conn()
 # Get some information !
 while True:
     try:
-        print(master.recv_match().to_dict())
-        print(master.messages['GPS_RAW_INIT'])
+        print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
+    try:
+        altitude = master.messages['ATTITUDE'].alt  # Note, you can access message fields as attributes!
+        timestamp = master.time_since('ATTITUDE')
+        print(altitude)
+    except:
+        print('No GPS_RAW_INT message received')
     time.sleep(1)
 
 # Output:
