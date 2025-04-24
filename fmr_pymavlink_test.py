@@ -1,13 +1,4 @@
-"""
-Example of how to connect to the autopilot by using mavproxy's
---udpin:0.0.0.0:9000 endpoint from the companion computer itself
-"""
-
-# Disable "Bare exception" warning
-# pylint: disable=W0702
-
 import time
-# Import mavutil
 from pymavlink import mavutil
 
 def wait_conn():
@@ -25,36 +16,16 @@ def wait_conn():
         msg = master.recv_match()
         time.sleep(0.5)
 
-# Create the connection
-#  Companion is already configured to allow script connections under the port 9000
-# Note: The connection is done with 'udpout' and not 'udpin'.
-#  You can check in http:192.168.1.2:2770/mavproxy that the communication made for 9000
-#  uses a 'udp' (server) and not 'udpout' (client).
+# Start connection over UDP
 master = mavutil.mavlink_connection('udpout:192.168.0.4:14540')
 
-# Send a ping to start connection and wait for any reply.
-#  This function is necessary when using 'udpout',
-#  as described before, 'udpout' connects to 'udpin',
-#  and needs to send something to allow 'udpin' to start
-#  sending data.
+# Ping to initialise connection
 wait_conn()
 
-# Get some information !
 while True:
     try:
+        print(master.recv_match('SYSTEM_TIME').to_dict())
         print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
-    try:
-        altitude = master.messages['ATTITUDE'].alt  # Note, you can access message fields as attributes!
-        timestamp = master.time_since('ATTITUDE')
-        print(altitude)
-    except:
-        print('No GPS_RAW_INT message received')
     time.sleep(1)
-
-# Output:
-# {'mavpackettype': 'AHRS2', 'roll': -0.11364290863275528, 'pitch': -0.02841472253203392, 'yaw': 2.0993032455444336, 'altitude': 0.0, 'lat': 0, 'lng': 0}
-# {'mavpackettype': 'AHRS3', 'roll': 0.025831475853919983, 'pitch': 0.006112074479460716, 'yaw': 2.1514968872070312, 'altitude': 0.0, 'lat': 0, 'lng': 0, 'v1': 0.0, 'v2': 0.0, 'v3': 0.0, 'v4': 0.0}
-# {'mavpackettype': 'VFR_HUD', 'airspeed': 0.0, 'groundspeed': 0.0, 'heading': 123, 'throttle': 0, 'alt': 3.129999876022339, 'climb': 3.2699999809265137}
-# {'mavpackettype':
