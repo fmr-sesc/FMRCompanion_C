@@ -30,5 +30,5 @@ while True:
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
-    master.mav.fmr_sensors_send(1, 2, 3, 4, 5)
-    time.sleep(0.0001)
+    master.mav.system_time_send(1, 2, 3, 4, 5)
+    time.sleep(0.01)
