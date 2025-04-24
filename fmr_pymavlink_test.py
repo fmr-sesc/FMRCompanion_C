@@ -1,6 +1,7 @@
 import time
 from pymavlink import mavutil
 
+mavutil.set_dialect("common")
 def wait_conn():
     """
     Sends a ping to stabilish the UDP communication and awaits for a response
@@ -30,6 +31,13 @@ while True:
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
-    master.mav.system_time_send(1, 2)
-    print(master.mav.__file__)
+    # Create and send your custom message
+    msg = master.mav.fmr_sensors_encode(
+        sens_1=3.14,
+        sens_2=2.71,
+        sens_3=2.71,
+        sens_4=2.71,
+        sens_5=2.71
+    )
+    master.mav.send(msg)
     time.sleep(0.01)
