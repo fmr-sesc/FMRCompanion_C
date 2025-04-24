@@ -1,6 +1,6 @@
 import os
 os.environ['MAVLINK_DIALECT'] = 'common'
-os.environ['MAVLINK20'] = '0'  # or unset it to default to 1.0
+os.environ.pop('MAVLINK20', None)
 import time
 from pymavlink import mavutil
 
