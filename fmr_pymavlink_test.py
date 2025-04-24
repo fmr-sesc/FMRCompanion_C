@@ -20,7 +20,9 @@ def wait_conn():
 master = mavutil.mavlink_connection('udpout:192.168.0.4:14540', dialect="common")
 
 # Ping to initialise connection
+print("Waiting for connection")
 wait_conn()
+print("Drone Connected")
 
 while True:
     try:
@@ -28,4 +30,4 @@ while True:
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
-    time.sleep(1)
+    time.sleep(0.0001)
