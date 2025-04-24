@@ -43,9 +43,10 @@ wait_conn()
 while True:
     try:
         print(master.recv_match().to_dict())
+        print(master.messages['GPS_RAW_INIT'])
     except:
         pass
-    time.sleep(0.1)
+    time.sleep(1)
 
 # Output:
 # {'mavpackettype': 'AHRS2', 'roll': -0.11364290863275528, 'pitch': -0.02841472253203392, 'yaw': 2.0993032455444336, 'altitude': 0.0, 'lat': 0, 'lng': 0}
