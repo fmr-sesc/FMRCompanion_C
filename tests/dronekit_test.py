@@ -1,8 +1,8 @@
-from tools import UAVTracker_DK
+from tools import UAVTracker
 import time
 import threading
 
-drone = UAVTracker_DK()
+drone = UAVTracker()
 
 updateDroneThread = threading.Thread(target=drone.run, daemon=True)
 updateDroneThread.start()
