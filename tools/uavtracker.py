@@ -30,6 +30,7 @@ class UAVTracker:
 
         while True:
                 try:
+                    self.vehicle.recv_match()
                     print(self.vehicle.messages['GPS_RAW_INT'].alt)
                     #print(self.vehicle.recv_match('GPS_RAW_INT').lat)
                     #print(self.vehicle.recv_match('GPS_RAW_INT').lon)
