@@ -1,7 +1,6 @@
 import smbus2
 import threading
 import time
-import asyncio
 from tools import Logger
 from tools import UAVTracker
 from tools import detect_USB_drive
