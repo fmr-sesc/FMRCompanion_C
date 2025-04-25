@@ -117,7 +117,7 @@ class UAVTracker:
     async def track_system_time(self):
         '''Coroutine to get system time from UAV'''
         while True:
-            msg = await self.get_mavlink_msg(self.vehicle, 'SYSTEM_TIME')
+            msg = await self.get_mavlink_msg(msg_type='SYSTEM_TIME')
             if msg:
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
                 print(f"[DateTime] {self.system_time}")
