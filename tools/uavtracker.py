@@ -43,7 +43,7 @@ class UAVTracker:
                     #print(self.vehicle.recv_match('GPS_RAW_INT').lon)
                 except:
                     pass
-                time.sleep(self.sample_time)
+                #time.sleep(self.sample_time)
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
