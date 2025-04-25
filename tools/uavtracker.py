@@ -40,7 +40,7 @@ class UAVTracker:
         # Request GPS_RAW_INT at 8 hz
         self.request_message(24, 0.125)
         # Request armed state
-        self.request_message(128, 1)
+        self.request_message(0, 1)
 
         await asyncio.gather(
             self.get_system_time(),
