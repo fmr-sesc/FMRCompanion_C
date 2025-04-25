@@ -30,6 +30,12 @@ class UAVTracker:
         self.wait_conn()
         print("Drone Connected")
 
+        # Wait for the first heartbeat to set the system and component ID of remote system for the link
+        print("Waiting for heartbeat")
+        self.vehicle.wait_heartbeat()
+        print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
+
+
         # Define command_long_encode message to send MAV_CMD_SET_MESSAGE_INTERVAL command
         # param1: MAVLINK_MSG_ID_BATTERY_STATUS (message to stream)
         # param2: 1000000 (Stream interval in microseconds)
