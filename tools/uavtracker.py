@@ -38,7 +38,7 @@ class UAVTracker:
         # Request SYSTEM_TIME message at 1 hz 
         self.request_message(2, 1)
         # Request GPS_RAW_INT at 8 hz
-        self.request_message(24, 0.125)
+        #self.request_message(24, 0.125)
         # Request armed state
         self.request_message(0, 1)
 
