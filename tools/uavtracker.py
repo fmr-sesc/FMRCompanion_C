@@ -111,7 +111,7 @@ class UAVTracker:
             if msg:
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
                 print(f"[DateTime] {self.system_time}")
-            await asyncio.sleep(1)  # Yield control to other coroutines
+            await asyncio.sleep(0.1)  # Yield control to other coroutines
 
     async def get_gps_position(self):
         '''Coroutine to get latitude and longitude of UAV'''
@@ -122,7 +122,7 @@ class UAVTracker:
                 self.longitude = msg.lon
                 #print(self.latitude)
                 #print(self.longitude)
-            await asyncio.sleep(0.125)
+            await asyncio.sleep(0.1)
 
     async def get_arm_state(self):
         '''Coroutine to get the armed status of the UAV and enable logging if armed'''
@@ -135,4 +135,4 @@ class UAVTracker:
                 else:
                     self.logging_enabled = False
                 print(self.logging_enabled)
-            await asyncio.sleep(1)  # Yield control to other coroutines
+            await asyncio.sleep(0.1)  # Yield control to other coroutines
