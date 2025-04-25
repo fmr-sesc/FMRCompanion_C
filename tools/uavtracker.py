@@ -36,14 +36,16 @@ class UAVTracker:
         self.request_message(2, 1)
 
         while True:
-                try:
-                    print(self.vehicle.recv_match('SYSTEM_TIME').time_unix_usec)
-                    #print(self.vehicle.recv_match('ATTITUDE'))
-                    #print(self.vehicle.recv_match('GPS_RAW_INT').lat)
-                    #print(self.vehicle.recv_match('GPS_RAW_INT').lon)
-                except:
-                    pass
-                time.sleep(self.sample_time)
+            msg = self.vehicle.recv_match(blocking=True, timeout=2)
+            if not msg:
+                continue
+
+            if msg.get_type() == 'SYSTEM_TIME':
+                print("SYSTEM_TIME:", msg.time_unix_usec)
+            elif msg.get_type() == 'GPS_RAW_INT':
+                print(f"GPS lat: {msg.lat}, lon: {msg.lon}")
+            elif msg.get_type() == 'ATTITUDE':
+                print(f"Roll: {msg.roll}, Pitch: {msg.pitch}")
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
