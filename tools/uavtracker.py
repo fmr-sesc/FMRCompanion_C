@@ -102,6 +102,11 @@ class UAVTracker:
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self.run())
 
+    async def get_mavlink_msg(self, msg_type):
+        '''Asyncio executor for recieving mavlink messages'''
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
+
     async def message_dispatcher(self):
         while True:
             msg = await self.get_mavlink_msg(msg_type=None)  # Receive any message
@@ -117,7 +122,7 @@ class UAVTracker:
             elif msg_type == 'GPS_RAW_INT':
                 self.latitude = msg.lat
                 self.longitude = msg.lon
-                #print(self.latitude, self.longitude)
+                print(self.latitude, self.longitude)
 
             elif msg_type == 'HEARTBEAT':
                 self.logging_enabled = (msg.system_status == 4)
@@ -125,10 +130,6 @@ class UAVTracker:
 
             await asyncio.sleep(0)  # Yield control
 
-    async def get_mavlink_msg(self, msg_type):
-        '''Asyncio executor for recieving mavlink messages'''
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
     '''
     async def get_system_time(self):
         Coroutine to get system time from UAV
