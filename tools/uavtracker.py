@@ -44,7 +44,8 @@ class UAVTracker:
 
         await asyncio.gather(
             self.get_system_time(),
-            self.get_gps_position()
+            self.get_gps_position(),
+            self.get_arm_state()
         )
         
         '''
