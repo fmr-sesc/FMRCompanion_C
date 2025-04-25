@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 class UAVTracker:
-    """Class to track the UAV's latitude and longitude in real-time."""
+    """Class to handle UAV mavlink communication"""
     def __init__(self, drone_address='udpout:192.168.0.4:14540', usb_path = None, sample_time = 0.1):
         self.latitude = 0.0
         self.longitude = 0.0

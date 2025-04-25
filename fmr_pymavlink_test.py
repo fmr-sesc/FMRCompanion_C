@@ -35,7 +35,6 @@ while True:
         #print(master.recv_match('LOCAL_POSITION_NED').to_dict())
     except:
         pass
-    print(dir(master.mav))
     # Create and send your custom message
     msg = master.mav.fmr_sensors_send(
         sens_1=3.14,
