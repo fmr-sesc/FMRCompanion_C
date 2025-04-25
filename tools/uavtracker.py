@@ -103,6 +103,12 @@ class UAVTracker:
         else:
             print(f"Command failed for message: {message_id} with sample time: {message_sample_time}")
 
+    def run_in_thread(self):
+        """Setup seperate event loop to run in thread"""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self.run())
+        
     async def get_mavlink_msg(self, msg_type, timeout=2):
         '''Asyncio executor for recieving mavlink messages'''
         loop = asyncio.get_event_loop()

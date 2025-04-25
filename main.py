@@ -23,7 +23,7 @@ drone = UAVTracker(sample_time=mavlink_sample_time)
 
 # Initialise threads
 sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, sensorReadout_sample_time), daemon=True)
-updateDroneThread = threading.Thread(target=drone.run, daemon=True)
+updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True)
 
 # Start threads
 sensorReadoutThread.start()
