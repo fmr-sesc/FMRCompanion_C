@@ -76,7 +76,7 @@ class UAVTracker:
                 mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
                 0,  # Confirmation
                 message_id,  # param1: Message ID to be streamed
-                message_sample_time*10^6, # param2: Interval in microseconds
+                message_sample_time*pow(10,6), # param2: Interval in microseconds
                 0,       # param3 (unused)
                 0,       # param4 (unused)
                 0,       # param5 (unused)
