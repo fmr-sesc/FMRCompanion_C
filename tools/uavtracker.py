@@ -39,7 +39,7 @@ class UAVTracker:
         self.request_message(2, 1)
 
         await asyncio.gather(
-            self.track_system_time()
+            self.get_system_time()
         )
         
         '''
@@ -114,7 +114,7 @@ class UAVTracker:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
     
-    async def track_system_time(self):
+    async def get_system_time(self):
         '''Coroutine to get system time from UAV'''
         while True:
             msg = await self.get_mavlink_msg(msg_type='SYSTEM_TIME')
@@ -122,3 +122,14 @@ class UAVTracker:
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
                 print(f"[DateTime] {self.system_time}")
             await asyncio.sleep(0)  # Yield control to other coroutines
+
+    async def get_position(self):
+        '''Coroutine to get latitude and longitude of UAV'''
+        while True:
+            msg = await self.get_mavlink_msg(msg_type='GPS_RAW_INT')
+            if msg:
+                self.latitude = msg.lat
+                self.longitude = msg.lon
+                print(self.latitude)
+                print(self.longitude)
+            await asyncio.sleep(0)
