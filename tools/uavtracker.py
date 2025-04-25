@@ -37,8 +37,8 @@ class UAVTracker:
 
         # Request SYSTEM_TIME message at 1 hz 
         self.request_message(2, 1)
-        # Request GPS_RAW_INT at 50 hz
-        self.request_message(24, 0.02)
+        # Request GPS_RAW_INT at 8 hz
+        self.request_message(24, 0.125)
         # Request armed state
         self.request_message(128, 1)
 
@@ -138,12 +138,12 @@ class UAVTracker:
                 self.longitude = msg.lon
                 print(self.latitude)
                 print(self.longitude)
-            await asyncio.sleep(0.02)
+            await asyncio.sleep(0.125)
 
     async def get_arm_state(self):
         '''Coroutine to get the armed status of the UAV'''
         while True:
-            msg = await self.get_mavlink_msg(msg_type='MAV_MODE_FLAG_SAFETY_ARMED')
+            msg = await self.get_mavlink_msg(msg_type='HEARTBEAT')
             if msg:
                 print(f"[test] {msg}")
             await asyncio.sleep(1)  # Yield control to other coroutines
