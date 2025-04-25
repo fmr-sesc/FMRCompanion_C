@@ -12,13 +12,14 @@ mavutil.set_dialect("common")
 
 class UAVTracker:
     """Class to handle UAV mavlink communication"""
-    def __init__(self, drone_address='udpout:192.168.0.4:14540', sample_time = 0.1):
+    def __init__(self, drone_address='udpout:192.168.0.4:14540', gps_sample_time = 0.05, mav_send_sample_time = 0.02):
         self.vehicle = None
         self.latitude = 0.0
         self.longitude = 0.0
         self.drone_address = drone_address
         self.logging_enabled = False
-        self.sample_time = sample_time
+        self.gps_sample_time = gps_sample_time
+        self.mav_send_sample_time = mav_send_sample_time
         self.system_time = None
 
     async def run(self):
@@ -31,13 +32,11 @@ class UAVTracker:
         print("Drone Connected")
 
         # Wait for the first heartbeat to set the system and component ID of remote system for the link
-        print("Waiting for heartbeat")
         self.vehicle.wait_heartbeat()
-        print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
 
         # Request SYSTEM_TIME message at 1 hz 
         self.request_message(2, 1)
-        # Request GPS_RAW_INT at 8 hz
+        # Request GPS_RAW_INT at 20 hz
         self.request_message(24, 0.05)
 
         # Start asyncio coroutines
@@ -47,7 +46,7 @@ class UAVTracker:
         )
 
     def wait_conn(self):
-        """Sends a ping to stabilish the UDP communication and awaits for a response"""
+        """Sends a ping to stabilish the UDP communication and waits for a response"""
         msg = None
         while not msg:
             self.vehicle.mav.ping_send(
@@ -112,6 +111,7 @@ class UAVTracker:
 
             msg_type = msg.get_type()
 
+            # Update parameters based on message type
             if msg_type == 'SYSTEM_TIME':
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
                 print(f"[DateTime] {self.system_time}")
@@ -138,4 +138,4 @@ class UAVTracker:
             sens_5=2.71
             )
             x = x + 0.1
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(self.mav_send_sample_time)
