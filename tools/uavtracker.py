@@ -136,8 +136,8 @@ class UAVTracker:
             if msg:
                 self.latitude = msg.lat
                 self.longitude = msg.lon
-                print(self.latitude)
-                print(self.longitude)
+                #print(self.latitude)
+                #print(self.longitude)
             await asyncio.sleep(0.125)
 
     async def get_arm_state(self):
