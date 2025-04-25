@@ -1,6 +1,8 @@
 import os
 import time
+import asyncio
 from pymavlink import mavutil
+from datetime import datetime
 
 # Set mavlink type to Mavlink 1
 os.environ.pop('MAVLINK20', None)
@@ -17,10 +19,11 @@ class UAVTracker:
         self.logging_enabled = False
         self.usb_path = usb_path
         self.sample_time = sample_time
+        self.system_time = None
 
-    def run(self):
+    async def run(self):
         # Start connection over UDP
-        self.vehicle = mavutil.mavlink_connection('udpout:192.168.0.4:14540', dialect="common")
+        self.vehicle = mavutil.mavlink_connection(self.drone_address, dialect="common")
 
         # Ping to initialise connection
         print("Ping drone and wait for connection")
@@ -32,9 +35,15 @@ class UAVTracker:
         self.vehicle.wait_heartbeat()
         print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
 
-        # Request SYSTEM_TIME message
+        # Request SYSTEM_TIME message at 1 hz 
         self.request_message(2, 1)
 
+        await asyncio.gather(
+            self.track_system_time()
+        )
+        
+        '''
+        # Main loop
         while True:
             msg = self.vehicle.recv_match(blocking=True, timeout=2)
             if not msg:
@@ -46,6 +55,7 @@ class UAVTracker:
                 print(f"GPS lat: {msg.lat}, lon: {msg.lon}")
             elif msg.get_type() == 'ATTITUDE':
                 print(f"Roll: {msg.roll}, Pitch: {msg.pitch}")
+        '''
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
@@ -75,7 +85,7 @@ class UAVTracker:
                 mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
                 0,  # Confirmation
                 message_id,  # param1: Message ID to be streamed
-                message_sample_time*pow(10,6), # param2: Interval in microseconds
+                message_sample_time * 1e6, # param2: Interval in microseconds
                 0,       # param3 (unused)
                 0,       # param4 (unused)
                 0,       # param5 (unused)
@@ -92,3 +102,17 @@ class UAVTracker:
             print(f"Command accepted for message: {message_id} with sample time: {message_sample_time}")
         else:
             print(f"Command failed for message: {message_id} with sample time: {message_sample_time}")
+
+    async def get_mavlink_msg(self, msg_type, timeout=2):
+        '''Asyncio executor for recieving mavlink messages'''
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=timeout))
+    
+    async def track_system_time(self):
+        '''Coroutine to get system time from UAV'''
+        while True:
+            msg = await self.get_mavlink_msg(self.vehicle, 'SYSTEM_TIME')
+            if msg:
+                self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
+                print(f"[DateTime] {self.system_time}")
+            await asyncio.sleep(0)  # Yield control to other coroutines
