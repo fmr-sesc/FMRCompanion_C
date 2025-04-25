@@ -22,6 +22,9 @@ class UAVTracker:
         # Start connection over UDP
         self.vehicle = mavutil.mavlink_connection('udpout:192.168.0.4:14540', dialect="common")
 
+        print(self.vehicle.target_system)
+        print(self.vehicle.target_component)
+
         # Ping to initialise connection
         print("Ping drone and wait for connection")
         self.wait_conn()
