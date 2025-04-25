@@ -1,9 +1,10 @@
 import os
-os.environ['MAVLINK_DIALECT'] = 'common'
-os.environ.pop('MAVLINK20', None)
 import time
 from pymavlink import mavutil
 
+# Set mavlink type to Mavlink 1
+os.environ.pop('MAVLINK20', None)
+# Set mavlink dialect to common
 mavutil.set_dialect("common")
 print(mavutil.mavlink.__name__)
 def wait_conn():
