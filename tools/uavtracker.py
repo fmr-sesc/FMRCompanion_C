@@ -30,9 +30,9 @@ class UAVTracker:
 
         while True:
                 try:
-                    #print(self.vehicle.recv_match().to_dict())
-                    print(self.vehicle.recv_match('GPS_RAW_INT').lat)
-                    print(self.vehicle.recv_match('GPS_RAW_INT').lon)
+                    print(self.vehicle.messages['GPS_RAW_INT'].alt)
+                    #print(self.vehicle.recv_match('GPS_RAW_INT').lat)
+                    #print(self.vehicle.recv_match('GPS_RAW_INT').lon)
                 except:
                     pass
                 time.sleep(self.sample_time)
