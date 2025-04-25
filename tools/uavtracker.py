@@ -41,11 +41,14 @@ class UAVTracker:
         # Request armed state
         self.request_message(0, 1)
 
+        await self.message_dispatcher()
+        '''
         await asyncio.gather(
             self.get_system_time(),
             self.get_gps_position(),
             self.get_arm_state()
         )
+        '''
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
@@ -99,13 +102,37 @@ class UAVTracker:
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self.run())
 
+    async def message_dispatcher(self):
+        while True:
+            msg = await self.get_mavlink_msg(msg_type=None)  # Receive any message
+            if not msg:
+                continue
+
+            msg_type = msg.get_type()
+
+            if msg_type == 'SYSTEM_TIME':
+                self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
+                print(f"[DateTime] {self.system_time}")
+
+            elif msg_type == 'GPS_RAW_INT':
+                self.latitude = msg.lat
+                self.longitude = msg.lon
+                #print(self.latitude, self.longitude)
+
+            elif msg_type == 'HEARTBEAT':
+                self.logging_enabled = (msg.system_status == 4)
+                print(f"[Armed] {self.logging_enabled}")
+
+            await asyncio.sleep(0)  # Yield control
+
+    '''
     async def get_mavlink_msg(self, msg_type):
-        '''Asyncio executor for recieving mavlink messages'''
+        Asyncio executor for recieving mavlink messages
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
     
     async def get_system_time(self):
-        '''Coroutine to get system time from UAV'''
+        Coroutine to get system time from UAV
         while True:
             msg = await self.get_mavlink_msg(msg_type='SYSTEM_TIME')
             if msg:
@@ -114,7 +141,7 @@ class UAVTracker:
             await asyncio.sleep(0.1)  # Yield control to other coroutines
 
     async def get_gps_position(self):
-        '''Coroutine to get latitude and longitude of UAV'''
+        Coroutine to get latitude and longitude of UAV
         while True:
             msg = await self.get_mavlink_msg(msg_type='GPS_RAW_INT')
             if msg:
@@ -125,7 +152,7 @@ class UAVTracker:
             await asyncio.sleep(0.1)
 
     async def get_arm_state(self):
-        '''Coroutine to get the armed status of the UAV and enable logging if armed'''
+        Coroutine to get the armed status of the UAV and enable logging if armed
         while True:
             msg = await self.get_mavlink_msg(msg_type='HEARTBEAT')
             if msg:
@@ -136,3 +163,4 @@ class UAVTracker:
                     self.logging_enabled = False
                 print(self.logging_enabled)
             await asyncio.sleep(0.1)  # Yield control to other coroutines
+    '''
