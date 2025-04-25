@@ -108,11 +108,11 @@ class UAVTracker:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         loop.run_until_complete(self.run())
-        
-    async def get_mavlink_msg(self, msg_type, timeout=2):
+
+    async def get_mavlink_msg(self, msg_type):
         '''Asyncio executor for recieving mavlink messages'''
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=timeout))
+        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
     
     async def track_system_time(self):
         '''Coroutine to get system time from UAV'''
