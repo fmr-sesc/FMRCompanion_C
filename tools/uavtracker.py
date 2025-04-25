@@ -33,7 +33,7 @@ class UAVTracker:
         print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
 
         # Request SYSTEM_TIME message
-        self.request_message(2, 0.01)
+        self.request_message(2, 1)
 
         while True:
                 try:
