@@ -35,40 +35,13 @@ class UAVTracker:
         self.vehicle.wait_heartbeat()
         print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
 
-        '''
-        # Define command_long_encode message to send MAV_CMD_SET_MESSAGE_INTERVAL command
-        # param1: MAVLINK_MSG_ID_BATTERY_STATUS (message to stream)
-        # param2: 1000000 (Stream interval in microseconds)
-        message = self.vehicle.mav.command_long_encode(
-                self.vehicle.target_system,  # Target system ID
-                self.vehicle.target_component,  # Target component ID
-                mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
-                0,  # Confirmation
-                2,  # param1: Message ID to be streamed
-                10000, # param2: Interval in microseconds
-                0,       # param3 (unused)
-                0,       # param4 (unused)
-                0,       # param5 (unused)
-                0,       # param5 (unused)
-                0        # param6 (unused)
-                )
-
-        # Send the COMMAND_LONG
-        self.vehicle.mav.send(message)
-
-        # Wait for a response (blocking) to the MAV_CMD_SET_MESSAGE_INTERVAL command and print result
-        response = self.vehicle.recv_match(type='COMMAND_ACK', blocking=True)
-        if response and response.command == mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL and response.result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
-            print("Command accepted")
-        else:
-            print("Command failed")
-        '''
-
+        # Request SYSTEM_TIME message
+        self.request_message(2, 0.01)
 
         while True:
                 try:
-                    print(self.vehicle.recv_match('SYSTEM_TIME').to_dict())
-                    print(self.vehicle.recv_match('ATTITUDE').to_dict())
+                    print(self.vehicle.recv_match('SYSTEM_TIME'))
+                    print(self.vehicle.recv_match('ATTITUDE'))
                     #print(self.vehicle.recv_match('GPS_RAW_INT').lat)
                     #print(self.vehicle.recv_match('GPS_RAW_INT').lon)
                 except:
@@ -87,3 +60,36 @@ class UAVTracker:
             )
             msg = self.vehicle.recv_match()
             time.sleep(0.5)
+
+    def request_message(self, message_id, message_sample_time):
+        '''
+        Function to request a specific mavlink message from the FC
+        message_id: Mavlink message id defined in pymavlink/dialects/v10/common.py
+        message_sample_time: Frequency at which the message has to be send in seconds
+        '''
+        # Define command_long_encode message to send MAV_CMD_SET_MESSAGE_INTERVAL command
+        # param1: MAVLINK_MSG_ID_BATTERY_STATUS (message to stream)
+        # param2: 1000000 (Stream interval in microseconds)
+        message = self.vehicle.mav.command_long_encode(
+                self.vehicle.target_system,  # Target system ID
+                self.vehicle.target_component,  # Target component ID
+                mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
+                0,  # Confirmation
+                message_id,  # param1: Message ID to be streamed
+                message_sample_time*10^6, # param2: Interval in microseconds
+                0,       # param3 (unused)
+                0,       # param4 (unused)
+                0,       # param5 (unused)
+                0,       # param5 (unused)
+                0        # param6 (unused)
+                )
+
+        # Send the COMMAND_LONG
+        self.vehicle.mav.send(message)
+
+        # Wait for a response (blocking) to the MAV_CMD_SET_MESSAGE_INTERVAL command and print result
+        response = self.vehicle.recv_match(type='COMMAND_ACK', blocking=True)
+        if response and response.command == mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL and response.result == mavutil.mavlink.MAV_RESULT_ACCEPTED:
+            print(f"Command accepted for message: {message_id} with sample time: {message_sample_time}")
+        else:
+            print(f"Command failed for message: {message_id} with sample time: {message_sample_time}")
