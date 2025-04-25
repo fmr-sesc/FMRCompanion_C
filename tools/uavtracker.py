@@ -41,8 +41,8 @@ class UAVTracker:
         self.request_message(24, 0.02)
 
         await asyncio.gather(
-            self.get_system_time()
-            #self.get_gps_position()
+            self.get_system_time(),
+            self.get_gps_position()
         )
         
         '''
