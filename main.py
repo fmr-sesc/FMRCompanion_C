@@ -19,7 +19,7 @@ bus = smbus2.SMBus(1)
 # Setup Logger
 logger = Logger(usb_path=usb_path, sample_time=logger_sample_time)
 # Setup drone object for telemetry
-drone = UAVTracker(sample_time=mavlink_sample_time)
+drone = UAVTracker(gps_sample_time = 0.05, mav_send_sample_time = 0.02)
 
 # Initialise threads
 sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, sensorReadout_sample_time), daemon=True)
