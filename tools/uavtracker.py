@@ -3,6 +3,7 @@ import time
 import asyncio
 from pymavlink import mavutil
 from datetime import datetime
+import math
 
 # Set mavlink type to Mavlink 1
 os.environ.pop('MAVLINK20', None)
@@ -38,17 +39,12 @@ class UAVTracker:
         self.request_message(2, 1)
         # Request GPS_RAW_INT at 8 hz
         self.request_message(24, 0.05)
-        # Request armed state
-        self.request_message(0, 1)
 
-        await self.message_dispatcher()
-        '''
+        # Start asyncio coroutines
         await asyncio.gather(
-            self.get_system_time(),
-            self.get_gps_position(),
-            self.get_arm_state()
+            self.message_reciever(),
+            self.message_dispatcher()
         )
-        '''
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
@@ -107,7 +103,8 @@ class UAVTracker:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
 
-    async def message_dispatcher(self):
+    async def message_reciever(self):
+        '''Function to watch incomming mavlink traffic und update parameters corresponding to the messages'''
         while True:
             msg = await self.get_mavlink_msg(msg_type=None)  # Receive any message
             if not msg:
@@ -130,37 +127,15 @@ class UAVTracker:
 
             await asyncio.sleep(0)  # Yield control
 
-    '''
-    async def get_system_time(self):
-        Coroutine to get system time from UAV
+    async def message_dispatcher(self):
+        x = 0
         while True:
-            msg = await self.get_mavlink_msg(msg_type='SYSTEM_TIME')
-            if msg:
-                self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
-                print(f"[DateTime] {self.system_time}")
-            await asyncio.sleep(0.1)  # Yield control to other coroutines
-
-    async def get_gps_position(self):
-        Coroutine to get latitude and longitude of UAV
-        while True:
-            msg = await self.get_mavlink_msg(msg_type='GPS_RAW_INT')
-            if msg:
-                self.latitude = msg.lat
-                self.longitude = msg.lon
-                #print(self.latitude)
-                #print(self.longitude)
+            self.vehicle.mav.fmr_sensors_send(
+            sens_1=math.sin(x),
+            sens_2=2.71,
+            sens_3=2.71,
+            sens_4=2.71,
+            sens_5=2.71
+            )
+            x = x + 0.1
             await asyncio.sleep(0.1)
-
-    async def get_arm_state(self):
-        Coroutine to get the armed status of the UAV and enable logging if armed
-        while True:
-            msg = await self.get_mavlink_msg(msg_type='HEARTBEAT')
-            if msg:
-                # If MAV_STATE is 4 corresponding to active enable logging
-                if msg.system_status == 4:
-                    self.logging_enabled = True
-                else:
-                    self.logging_enabled = False
-                print(self.logging_enabled)
-            await asyncio.sleep(0.1)  # Yield control to other coroutines
-    '''
