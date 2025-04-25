@@ -11,13 +11,12 @@ mavutil.set_dialect("common")
 
 class UAVTracker:
     """Class to handle UAV mavlink communication"""
-    def __init__(self, drone_address='udpout:192.168.0.4:14540', usb_path = None, sample_time = 0.1):
+    def __init__(self, drone_address='udpout:192.168.0.4:14540', sample_time = 0.1):
         self.vehicle = None
         self.latitude = 0.0
         self.longitude = 0.0
         self.drone_address = drone_address
         self.logging_enabled = False
-        self.usb_path = usb_path
         self.sample_time = sample_time
         self.system_time = None
 
@@ -47,21 +46,6 @@ class UAVTracker:
             self.get_gps_position(),
             self.get_arm_state()
         )
-        
-        '''
-        # Main loop
-        while True:
-            msg = self.vehicle.recv_match(blocking=True, timeout=2)
-            if not msg:
-                continue
-
-            if msg.get_type() == 'SYSTEM_TIME':
-                print("SYSTEM_TIME:", msg.time_unix_usec)
-            elif msg.get_type() == 'GPS_RAW_INT':
-                print(f"GPS lat: {msg.lat}, lon: {msg.lon}")
-            elif msg.get_type() == 'ATTITUDE':
-                print(f"Roll: {msg.roll}, Pitch: {msg.pitch}")
-        '''
 
     def wait_conn(self):
         """Sends a ping to stabilish the UDP communication and awaits for a response"""
@@ -141,9 +125,14 @@ class UAVTracker:
             await asyncio.sleep(0.125)
 
     async def get_arm_state(self):
-        '''Coroutine to get the armed status of the UAV'''
+        '''Coroutine to get the armed status of the UAV and enable logging if armed'''
         while True:
             msg = await self.get_mavlink_msg(msg_type='HEARTBEAT')
             if msg:
-                print(f"[test] {msg}")
+                # If MAV_STATE is 4 corresponding to active enable logging
+                if msg.system_status == 4:
+                    self.logging_enabled = True
+                else:
+                    self.logging_enabled = False
+                print(self.logging_enabled)
             await asyncio.sleep(1)  # Yield control to other coroutines
