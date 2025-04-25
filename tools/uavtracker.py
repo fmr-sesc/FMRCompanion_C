@@ -38,7 +38,7 @@ class UAVTracker:
                 self.vehicle.target_component,  # Target component ID
                 mavutil.mavlink.MAV_CMD_SET_MESSAGE_INTERVAL,  # ID of command to send
                 0,  # Confirmation
-                mavutil.mavlink.MAVLINK_MSG_ID_GPS_RAW_INT,  # param1: Message ID to be streamed
+                2,  # param1: Message ID to be streamed
                 10000, # param2: Interval in microseconds
                 0,       # param3 (unused)
                 0,       # param4 (unused)
