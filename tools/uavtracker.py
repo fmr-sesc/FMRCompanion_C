@@ -35,7 +35,7 @@ class UAVTracker:
         self.vehicle.wait_heartbeat()
         print("Heartbeat from system (system %u component %u)" % (self.vehicle.target_system, self.vehicle.target_component))
 
-
+        '''
         # Define command_long_encode message to send MAV_CMD_SET_MESSAGE_INTERVAL command
         # param1: MAVLINK_MSG_ID_BATTERY_STATUS (message to stream)
         # param2: 1000000 (Stream interval in microseconds)
@@ -62,6 +62,7 @@ class UAVTracker:
             print("Command accepted")
         else:
             print("Command failed")
+        '''
 
 
         while True:
