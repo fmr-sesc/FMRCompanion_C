@@ -125,12 +125,11 @@ class UAVTracker:
 
             await asyncio.sleep(0)  # Yield control
 
-    '''
     async def get_mavlink_msg(self, msg_type):
-        Asyncio executor for recieving mavlink messages
+        '''Asyncio executor for recieving mavlink messages'''
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
-    
+    '''
     async def get_system_time(self):
         Coroutine to get system time from UAV
         while True:
