@@ -41,7 +41,7 @@ class UAVTracker:
 
         # Start asyncio coroutines
         await asyncio.gather(
-            self.message_reciever(),
+            self.message_receiver(),
             self.message_dispatcher()
         )
 
@@ -100,9 +100,9 @@ class UAVTracker:
     async def get_mavlink_msg(self, msg_type):
         '''Asyncio executor for recieving mavlink messages'''
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True, timeout=2))
+        return await loop.run_in_executor(None, lambda: self.vehicle.recv_match(type=msg_type, blocking=True))
 
-    async def message_reciever(self):
+    async def message_receiver(self):
         '''Function to watch incomming mavlink traffic und update parameters corresponding to the messages'''
         while True:
             msg = await self.get_mavlink_msg(msg_type=None)  # Receive any message
@@ -125,7 +125,7 @@ class UAVTracker:
                 self.logging_enabled = (msg.system_status == 4)
                 print(f"[Armed] {self.logging_enabled}")
 
-            await asyncio.sleep(0)  # Yield control
+            await asyncio.sleep(0.001)  # Yield control
 
     async def message_dispatcher(self):
         x = 0

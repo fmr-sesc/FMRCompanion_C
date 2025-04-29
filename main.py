@@ -16,7 +16,7 @@ usb_path = detect_USB_drive()
 # Setup I2C port 1 of the RasPi
 bus = smbus2.SMBus(1)
 # Setup Logger
-logger = Logger(usb_path=usb_path, sample_time=logger_sample_time)
+logger = Logger(usb_path=usb_path)
 # Setup drone object for telemetry
 drone = UAVTracker(gps_sample_time = 0.05, mav_send_sample_time = 0.02)
 
