@@ -14,10 +14,13 @@ class Logger(object):
         self.headers = ["Timestamp"]
         self.sample_time = sample_time
 
-    def create_csv(self):
+    def create_csv(self, date_time=None):
         """ Creates a new CSV file with a timestamped name. """
-        date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"sensor_log_{date_time}.csv"
+        if date_time == None:
+            date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            filename = f"sensor_log_pi_time_{date_time}.csv"
+        else:
+            filename = f"sensor_log_px4_time_{date_time}.csv"
         file_path = os.path.join(self.usb_path, filename)
 
         # Create the file with just the timestamp column

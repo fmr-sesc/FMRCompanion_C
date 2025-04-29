@@ -114,7 +114,7 @@ class UAVTracker:
             # Update parameters based on message type
             if msg_type == 'SYSTEM_TIME':
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
-                print(f"[DateTime] {self.system_time}")
+                print(f"{self.system_time}")
 
             elif msg_type == 'GPS_RAW_INT':
                 self.latitude = msg.lat

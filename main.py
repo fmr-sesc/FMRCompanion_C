@@ -35,7 +35,7 @@ dummy = True
 while True:
     # On arm create new log file
     if not previous_logging_state and dummy:
-        logger.create_csv()
+        logger.create_csv(date_time=drone.system_time)
     # Write collected data to csv (sensor data already loaded to buffer)
     if dummy:
         logger.log_data("Latitude", drone.latitude)
