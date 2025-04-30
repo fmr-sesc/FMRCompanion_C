@@ -217,17 +217,18 @@ Reboot the flightcontroller
 │── main.py  # Main Script
 │── /tools   # Add all self developed classes to run with main here
 │   │── __init__.py 
-│   │── logger.py  # Contains the Logger class used to write csv to USB Stick
-│   │── uavtracker.py  # Contains the UAVTracker class used to handle communication with flightcontroller over mavlink
-│── /threads   # Contains all functions initialised as threads in the main script (except mavlink handling)
-│   │── __init__.py
-│   │── sensorReadout.py # Function used in thread to handle all features involving attached sensorReadout
+│   │── logger.py  # Contains the Logger class used to write csv
+│   │── uavtracker.py  # Contains the UAVTracker class used to handle mavlink communication with px4 using pymavlink
+│   │── initCompanion.py # All functions to run on script start should be included here e.g. USB-Drive detection
 │── /peripherals   # Add all sensors/external hardware here
 │   │── __init__.py
 │   │── hcla02x5eb.py # Contains the HCLA02X5EB pressure sensor class
-│   │── tca9548a.py # Contains the TCA9548A I2C multiplexer class
+│   │── tca9548a.py # Contains the 
+│── /threads # Includes functions to be started in thread
+│   │── __init__.py
+│   │── sensorReadout.py # Thread setting up the sensors and multiplexer and writing measured data to the loggers buffer
 │── /tests # Folder to included scripts for testing purposes
-│── /images # Folder with images to make this doc pretty
+│── /pymavlink # Submodule linked to custom FMR-pymavlink repo
 ```
 ### Logger Class Overview
 
@@ -258,18 +259,20 @@ logger.write_data_to_csv() # Writes all data stored in the buffer into csv
 ### Uavtracker Class Overview
 
 #### Description
-The uavtracker class is setup to both initialise a communication with the attached flightcontroller using the mavlink protocoll and handle all data transfer between RasPi and flgihtcontroller. For this the package mavsdk is used which heavly relies on asynchronous programming using the asyncio libary to avoid blocking when handeling network tasks. As such every communication task is initialised as its own async function with the main run() loop establishing a connection to the flightcontroller and gathering all defined coroutines for asynchronous execution.
+The uavtracker class is setup to both initialise a communication with the attached flightcontroller using the mavlink protocoll and handle all data transfer between RasPi and flgihtcontroller. For this the FMR-custom pymavlink repository is used. The Flightcontroller streams a default message set defined by the ONBOARD profile where new messages can be requested using the request_message() function. Recieving and sending mavlink messages using pymavlink is setup as asynchronus functions to avoid code blocking.
 
 #### Functions
 * run(): Main loop used to establish a connection to the flight controller and starting the asynchronous execution of all coroutines defined in the asyncio.gather() functions
-* getPosition(): Asynchronous coroutine to continously request lattitude and longitude data from the flight controller and update the corresponding class attributes
-* getLoggingSwitch(): Asynchronous coroutine to continously request arm state and set class attribute logging_enabled to true once the UAV is armed. This logging can be triggered by a switch in arm state
-* run_in_thread(): Function to setup a seperate asyncio event loop containing the main run() function to allow execution in a thread on higher levels.
-
+* request_message(ID, sample_time): Function to request a certain mavlink message from the common message set defined by the ID, at a sampling time given by sample_time (s)
+* wait_conn(): Function sending a pinging the flightcontroller until a response is recieved to trigger the flightcontroller to stream over mavlink
+* run_in_thread(): Auxillary function to enable threading of asyncio functions
+* get_mavlink_message(msg_type): Allows to listen to a specific message type for example 'HEARTHBEAT' and return message once recieved. Note that this function is blocking and should be used carefully
+* message_receiver(): Asynchronous coroutine which listens to incomming mavlink traffic and updates class attributes based on recieved data. **This is the place to include new data which should be recieved from the flightcontroller**
+* message_dispatcher(): Asynchronous coroutine which sends mavlink messages to the flightcontroller at a sampling frequency defined by the mav_send_sample_time class attribute **This is the place to add data which should be send to the flightcontroller (note that message must be included in the common message definitions according to the readme in the pymavlink submodule)**
 #### Example
 With the following example a communication with the flightcontroller can be initialised in a seperate thread with the drone.run_in_thread function continously updating the object attributes based on the values read from the flightcontroller.
 ```python
-drone = UAVTracker() # Create UAVTracker object
+drone = UAVTracker(gps_sample_time = 0.05, mav_send_sample_time = 0.02) # Create UAVTracker object
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True) # Create thread for UAVTracker object
 updateDroneThread.start() # Start thread
 ```
