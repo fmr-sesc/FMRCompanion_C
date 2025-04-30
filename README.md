@@ -34,6 +34,7 @@
       </ul>
     </li>
     <li><a href="#Code Overview">Code Overview</a></li>
+    <li><a href="#General Workflow">General Workflow</a></li>
     <li><a href="#Required python packages">Required python packages</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -45,7 +46,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project contains all required code for the inhouse FMRCompanion computer to assist the main PX4 flightcontroller. All code is written in python and ready to be implemented on a RasPi 5 according to the getting started section. 
+This project contains all required code for the inhouse FMRCompanion computer to assist the main PX4 flightcontroller. All code is written in python and ready to be implemented on a RasPi 5 according to the getting started section. **Before developing new functionalitys for the RasPi or including new mavlink messages carefully read the General Workflow section below**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -277,6 +278,61 @@ updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True) # 
 updateDroneThread.start() # Start thread
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- General Workflow -->
+## General Workflow
+
+This section gives a guidline to the development of new features on the RasPi and in the PX4 Firmware. The project is based around multiple github repositorys which are linked using submodules and have to be updated accordingly in all repositorys once changes are made.
+
+### RasPi
+
+The structure of the FMRCompanion codebase follows clean coding principals, isolating independend functionalitys as much as possible in order to reduce dependencys and enabling modular development. When developing new features it should be concidered first where the feature belongs according to the folder structure presented above. If for example a new sensor is implemented and should be logged all code required for recieving data from the sensor should be written in a corresponding class in the /peripherals folder. This class can then be initialised in the /threads/sensorReadout function so that the sensor measuring and logging is handled in the corresponding thread. To give another example if some functionality has to be executed only once on startup for example a beeper making a noise once when the script has started it should be included in the function tools/initCompanion. As a general guidline the main.py script should be kept as clean as possible only initialising the threads used for sensorReadout and UAV communication and keeping them alive in a simple while Loop.
+
+### Github
+
+For seamless integration of new functionalitys concerning mavlink both the PX4 firmware and the companion utilize the same FMR-mavlink and FMR-pymavlink github repo as a submodule as show in the shematic below.
+
+```sh
+PX4-Firmware/
+├── src/
+│   └── modules/
+│       └── mavlink/              
+│           ├── mavlink/          ← submodule: FMR-mavLink
+│               └── pymavlink/    ← submodule: FMR-pymavlink (via MAVLink)
+│
+
+FMRCompanion/
+└── pymavlink/                ← submodule: FMR-pymavlink (directly used by FMRCompanion)
+```
+
+As a result of this both the RasPi and the flightcontroller work with the same mavlink codebase which is curcial when implementing new mavlink messages or dialects. When updating any given repository which is a submodule of another repository both have to be update accodringly so that all components work with the same codebase. If for example a new mavlink message was created according to the next section in the /mavlink repository and the corresponding common.py was moved to the pymavlink submodule we need to start at the lowest level and forst commit the changes in the pymavlink submodule:
+
+```sh
+cd pymavlink # go into pymavlink folder (this can vary based on your folder structure)
+git commit -am "Some commit message"
+git push
+```
+
+Now in the mavlink repo which is referencing the pymavlink repository the updated commit has to be included:
+
+```sh
+cd .. # Jump one level up from pymavlink into mavlink folder (this can vary based on your folder structure)
+git add pymavlink # Add new pymavlink folder which will update the referenced commit hash to correspond to newest pymavlink version
+git commit -am "Some commit message"
+git push
+```
+
+Which has to be done again so that the PX4-Firmwar references the correct version of the mavlink repo:
+
+```sh
+cd PX4-Firmware # Go into main PX4-Firmware folder (this can vary based on your folder structure)
+git add src/modules/mavlink/mavlink # Reference correct location of the mavlink submodule
+git commit -am "Some commit message"
+```
+
+After this is done all submodule references are updated accordingly referencing the newest version of the submodules.
+
+### PX4 Firmware
 
 
 <!-- Required python packages -->
