@@ -288,7 +288,7 @@ This section gives a guidline to the development of new features on the RasPi an
 
 The structure of the FMRCompanion codebase follows clean coding principals, isolating independend functionalitys as much as possible in order to reduce dependencys and enabling modular development. When developing new features it should be concidered first where the feature belongs according to the folder structure presented above. 
 If for example a new sensor is implemented and should be logged all code required for recieving data from the sensor should be written in a corresponding class in the /peripherals folder. This class can then be initialised in the /threads/sensorReadout function so that the sensor measuring and logging is handled in the corresponding thread. To give another example if some functionality has to be executed only once on startup for example a beeper making a noise once when the script has started it should be included in the function tools/initCompanion. 
-As a general guidline the main.py script should be kept as clean as possible only initialising the threads used for sensorReadout and UAV communication and keeping them alive in a simple while Loop.
+As a general guidline the main.py script should be kept as clean as possible only initialising the threads used for sensorReadout and UAV communication and keeping them alive in a simple while Loop. When setting up the RasPi according to the instructions above, updating the code can be done by simply updating the github repo and pulling the changes on the RasPi.
 
 ### Github
 
@@ -307,7 +307,7 @@ FMRCompanion/
 └── pymavlink/                ← submodule: FMR-pymavlink (directly used by FMRCompanion)
 ```
 
-As a result of this both the RasPi and the flightcontroller work with the same mavlink codebase which is curcial when implementing new mavlink messages or dialects. When updating any given repository which is a submodule of another repository both have to be update accodringly so that all components work with the same codebase. If for example a new mavlink message was created according to the next section in the /mavlink repository and the corresponding common.py was moved to the pymavlink submodule we need to start at the lowest level and forst commit the changes in the pymavlink submodule:
+As a result of this both the RasPi and the flightcontroller work with the same mavlink codebase which is curcial when implementing new mavlink messages or dialects. When updating any given repository which is a submodule of another repository both have to be update accodringly so that all components work with the same codebase. If for example a new mavlink message was created according to the next section in the /mavlink repository and the corresponding common.py was moved to the pymavlink submodule we need to start at the lowest level and first commit the changes in the pymavlink submodule:
 
 ```sh
 cd pymavlink # go into pymavlink folder (this can vary based on your folder structure)
@@ -336,6 +336,115 @@ After this is done all submodule references are updated accordingly referencing 
 
 ### PX4 Firmware
 
+This section explains how to include new uORB topics in the firmware create a new mavlink message and set it up so that the recieved data updated the created uORB topic and generate the corresponding python code so that the RasPi can send the newly created mavlink message. (All shell script examples start from ~/) It is assumed that the FMR-PX4-Autopilot repository was cloned accordingly and all submodules are checked out at the corresponding branches. When running git submodule update --init --recursive the submodules are checked out in a detached head stead which is not what we want. To fix this navigate to the corresponding submodule for example mavlink and checkout the right branch:
+
+```sh
+cd FMR-PX4-Firmware/src/modules/mavlink/mavlink
+git checkout v1.14.3-FMR-mavlink
+cd pymavlink
+git checkout v1.14.3-FMR-pymavlink
+```
+
+#### Including new uORB Topic
+
+Navigate to the right folder FMR-PX4-Firmware/msg and copy a existing message renaming it in camel case as desired for this example the new message is called FmrMav. Open the message and fill with desired fields for example:
+
+```sh
+uint64 timestamp # time since system start (microseconds)
+float64 sensor_1
+float64 sensor_2
+float64 sensor_3
+float64 sensor_4
+float64 sensor_5
+```
+
+Again in the folder FMR-PX4-Firmware/msg find and open CMakeLists and include the message (after line 224) again in camel case with the appropiate data type e.g.: FmrMav.msg. The message is now included in the firmware folder but only appears in the build after running make.
+
+#### Including new Mavlink Message
+
+Navigate to the folder FMR-PX4-Autopilot\src\modules\mavlink\mavlink\message_definitions\v1.0 which is included in the mavlink submodule and open common.xml which is the mavlink dialect used by the pixhawk and includes open message ID's for custom messages. After line 6362 there is space for custom messages with the available ID's 181-229 (every message must have a unique id). There create a message and add the desired fields for this example we create the message FMR_SENSORS with five available sensor fields:
+
+```c
+<message id="180" name="FMR_SENSORS">
+      <description>Message to include custom sensor values send by Companion computer.</description>
+      <field type="float" name="sens_1">Sensor 1 value.</field>
+      <field type="float" name="sens_2">Sensor 2 value.</field>
+      <field type="float" name="sens_3">Sensor 3 value.</field>
+      <field type="float" name="sens_4">Sensor 4 value.</field>
+      <field type="float" name="sens_5">Sensor 5 value.</field>
+</message>
+```
+
+Now the firmware has to be build from the wsl terminal in the FMR-PX4-Firmware folder so that all required header and sourscode files for the following section are generated from the new message definition:
+
+```sh
+make px4_fmu-v6x_fixedwing
+```
+
+#### Update Pymavlink
+
+Since we have included a custom message in the common dialect this now needs to be included in the pymavlink firmware. For this we first build the custom dialect python file from in the mavlink repo FMR-PX4-Autopilot\src\modules\mavlink\mavlink:
+
+```sh
+python3 -m pymavlink.tools.mavgen --lang=Python3 --wire-protocol=1.0 --output=common message_definitions/v1.0/common.xml
+```
+
+The output file "common.py" is now located in the same folder and has to be copied to FMR-PX4-Autopilot\src\modules\mavlink\mavlink\pymavlink\dialects\v10 to be included in the pymavlink submodule.
+
+#### Subscribing uORB topic to Mavlink Message
+
+Although the flightcontroller is now capable of recieving the new mavlink message we can only use the included data when it is published by a uORB topic which is explained in this section. As a example we do now publish the uORB message FmrMav with data recieved from the mavlink stream FMR_SENSORS defined above. (Of course both have to be included before the build using make for this to work) Be paticulary carefull to always take note of the change in naming convention of both the uORB topic and the mavlink message and the propper indentation of the included lines according to the rest of the files. Navigate to Open FMR-PX4-Autopilot\src\modules\mavlink\mavlink_receiver.h header file (Note that this is no longer in the mavlink submodule which is one layer depper) and include the uORB topic FmrMav after line 112 (take note of the naming conversion from camel case for the uORB topic to snake case):
+
+```c
+#include <uORB/topics/fmr_mav.h>
+```
+
+Add function signature for a function that handles the incomming mavlink message after line 204:
+
+```c
+void handle_message_fmr_sensors(mavlink_message_t *msg);
+```
+
+and add a uORB publisher:
+
+```c
+uORB::Publication<fmr_mav_s>   _fmr_mav_pub{ORB_ID(fmr_mav)};
+```
+
+Now open FMR-PX4-Autopilot\src\modules\mavlink\mavlink_receiver.cpp c-code file and add function after line 3060 (here take note of the difference in sensor_1 which is a parameter of the uORB topic and sens_1 which is a parameter send in the mavlink stream):
+
+```c
+MavlinkReceiver::handle_message_fmr_sensors(mavlink_message_t *msg)
+
+{
+    mavlink_fmr_sensors_t fmr_mav_mavlink;
+    mavlink_msg_fmr_sensors_decode(msg, &fmr_mav_mavlink);
+
+    fmr_mav_s fmr_mav{};
+
+    fmr_mav.timestamp = hrt_absolute_time();
+    fmr_mav.sensor_1 = (float)fmr_mav_mavlink.sens_1;
+    fmr_mav.sensor_2 = (float)fmr_mav_mavlink.sens_2;
+    fmr_mav.sensor_3 = (float)fmr_mav_mavlink.sens_3;
+    fmr_mav.sensor_4 = (float)fmr_mav_mavlink.sens_4;
+    fmr_mav.sensor_5 = (float)fmr_mav_mavlink.sens_5;
+
+    _fmr_mav_pub.publish(fmr_mav);
+
+}
+```
+
+Here "mavlink_fmr_sensors_t" and "mavlink_msg_fmr_sensors_decode" are functions from the generated mavlink_msg_fmr_sensors.h file in build/px4_fmu-v6x_fixedwing/mavlink/common/mavlink_msg_fmr_sensors.h. Finaly add the message handler after line 276:
+
+```c
+    case MAVLINK_MSG_ID_TEST_MSG:
+
+        handle_message_test_msg(msg);
+
+        break;
+```
+
+Now rebuild the firware which should now apply the recieved mavlink messages to the uORB topic.
 
 <!-- Required python packages -->
 ## Required python packages
