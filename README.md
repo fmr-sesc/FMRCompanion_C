@@ -34,7 +34,7 @@
       </ul>
     </li>
     <li><a href="#Code Overview">Code Overview</a></li>
-    <li><a href="#General Workflow">General Workflow</a></li>
+    <li><a href="#general workflow">General Workflow</a></li>
     <li><a href="#Required python packages">Required python packages</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -279,14 +279,16 @@ updateDroneThread.start() # Start thread
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- General Workflow -->
+<!-- GENERAL WORKFLOW -->
 ## General Workflow
 
 This section gives a guidline to the development of new features on the RasPi and in the PX4 Firmware. The project is based around multiple github repositorys which are linked using submodules and have to be updated accordingly in all repositorys once changes are made.
 
 ### RasPi
 
-The structure of the FMRCompanion codebase follows clean coding principals, isolating independend functionalitys as much as possible in order to reduce dependencys and enabling modular development. When developing new features it should be concidered first where the feature belongs according to the folder structure presented above. If for example a new sensor is implemented and should be logged all code required for recieving data from the sensor should be written in a corresponding class in the /peripherals folder. This class can then be initialised in the /threads/sensorReadout function so that the sensor measuring and logging is handled in the corresponding thread. To give another example if some functionality has to be executed only once on startup for example a beeper making a noise once when the script has started it should be included in the function tools/initCompanion. As a general guidline the main.py script should be kept as clean as possible only initialising the threads used for sensorReadout and UAV communication and keeping them alive in a simple while Loop.
+The structure of the FMRCompanion codebase follows clean coding principals, isolating independend functionalitys as much as possible in order to reduce dependencys and enabling modular development. When developing new features it should be concidered first where the feature belongs according to the folder structure presented above. 
+If for example a new sensor is implemented and should be logged all code required for recieving data from the sensor should be written in a corresponding class in the /peripherals folder. This class can then be initialised in the /threads/sensorReadout function so that the sensor measuring and logging is handled in the corresponding thread. To give another example if some functionality has to be executed only once on startup for example a beeper making a noise once when the script has started it should be included in the function tools/initCompanion. 
+As a general guidline the main.py script should be kept as clean as possible only initialising the threads used for sensorReadout and UAV communication and keeping them alive in a simple while Loop.
 
 ### Github
 
