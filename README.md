@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/FMR-logo-blue.png" alt="Logo" width="200" height="200">
   </a>
 
 <h3 align="center">FMRCompanion</h3>
@@ -89,6 +89,10 @@ Start the flashed RasPi and open a terminal either using SSH which has to be [se
   git checkout main
   git branch -D master
    ```
+Update FMR-pymavlink submodule
+  ```sh
+  git submodule update --init --recursive
+  ```
 
 3. **Install miniconda**
   ```sh
