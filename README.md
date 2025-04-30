@@ -256,7 +256,7 @@ logger.log_data("Sensor_B", data_sensor_b) # Store data in buffer
 logger.write_data_to_csv() # Writes all data stored in the buffer into csv
 ```
 
-### Uavtracker Class Overview
+### UAVtracker Class Overview
 
 #### Description
 The uavtracker class is setup to both initialise a communication with the attached flightcontroller using the mavlink protocoll and handle all data transfer between RasPi and flgihtcontroller. For this the FMR-custom pymavlink repository is used. The Flightcontroller streams a default message set defined by the ONBOARD profile where new messages can be requested using the request_message() function. Recieving and sending mavlink messages using pymavlink is setup as asynchronus functions to avoid code blocking.
