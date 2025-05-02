@@ -300,7 +300,7 @@ PX4-Firmware/
 │   └── modules/
 │       └── mavlink/              
 │           ├── mavlink/          ← submodule: FMR-mavLink
-│               └── pymavlink/    ← submodule: FMR-pymavlink (via MAVLink)
+│               └── pymavlink/    ← submodule: FMR-pymavlink (via FMR-mavlink)
 │
 
 FMRCompanion/
@@ -332,7 +332,7 @@ git add src/modules/mavlink/mavlink # Reference correct location of the mavlink 
 git commit -am "Some commit message"
 ```
 
-After this is done all submodule references are updated accordingly referencing the newest version of the submodules.
+After this is done all submodule references are updated accordingly referencing the newest version of the submodules. 
 
 ### PX4 Firmware
 
@@ -393,7 +393,7 @@ The output file "common.py" is now located in the same folder and has to be copi
 
 #### Subscribing uORB topic to Mavlink Message
 
-Although the flightcontroller is now capable of recieving the new mavlink message we can only use the included data when it is published by a uORB topic which is explained in this section. As a example we do now publish the uORB message FmrMav with data recieved from the mavlink stream FMR_SENSORS defined above. (Of course both have to be included before the build using make for this to work) Be paticulary carefull to always take note of the change in naming convention of both the uORB topic and the mavlink message and the propper indentation of the included lines according to the rest of the files. Navigate to Open FMR-PX4-Autopilot\src\modules\mavlink\mavlink_receiver.h header file (Note that this is no longer in the mavlink submodule which is one layer depper) and include the uORB topic FmrMav after line 112 (take note of the naming conversion from camel case for the uORB topic to snake case):
+Although the flightcontroller is now capable of recieving the new mavlink message we can only use the included data when it is published by a uORB topic which is explained in this section. As a example we do now publish the uORB message FmrMav with data recieved from the mavlink stream FMR_SENSORS defined above. (Of course both have to be included before the build using make for this to work) Be paticulary carefull to always take note of the change in naming convention of both the uORB topic and the mavlink message and the propper indentation of the included lines according to the rest of the code. Navigate to Open FMR-PX4-Autopilot\src\modules\mavlink\mavlink_receiver.h header file (Note that this is no longer in the mavlink submodule which is one layer depper) and include the uORB topic FmrMav after line 112 (take note of the naming conversion from camel case for the uORB topic to snake case):
 
 ```c
 #include <uORB/topics/fmr_mav.h>
@@ -450,7 +450,7 @@ Now rebuild the firware which should now apply the recieved mavlink messages to 
 ## Required python packages
 
 * smbus2
-* mavsdk
+* asyncio
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
