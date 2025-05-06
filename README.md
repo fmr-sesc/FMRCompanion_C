@@ -194,7 +194,7 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   * MAV_2_REMOTE_PRT = 14540 (Set port for companion computer)
   * MAV_2_UDP_PRT = 14540 (Set port for companion computer)
 4. **Setup the ethernet network**<br />
-  In QGroundcontrol click on QGroundcontrol symbol --> Analyze Tools --> MAVLink Console and enter:
+  In QGroundcontrol click on QGroundcontrol symbol --> Analyze Tools --> MAVLink Console and enter (note that the configuration is stored on the microsd card so if the corresponding "net.cfg" file is deletede the setup has to be repeated):
   ```sh
   echo DEVICE=eth0 > /fs/microsd/net.cfg
   echo BOOTPROTO=static >> /fs/microsd/net.cfg
@@ -270,6 +270,7 @@ The uavtracker class is setup to both initialise a communication with the attach
 * get_mavlink_message(msg_type): Allows to listen to a specific message type for example 'HEARTHBEAT' and return message once recieved. Note that this function is blocking and should be used carefully
 * message_receiver(): Asynchronous coroutine which listens to incomming mavlink traffic and updates class attributes based on recieved data. **This is the place to include new data which should be recieved from the flightcontroller**
 * message_dispatcher(): Asynchronous coroutine which sends mavlink messages to the flightcontroller at a sampling frequency defined by the mav_send_sample_time class attribute **This is the place to add data which should be send to the flightcontroller (note that message must be included in the common message definitions according to the readme in the pymavlink submodule)**
+
 #### Example
 With the following example a communication with the flightcontroller can be initialised in a seperate thread with the drone.run_in_thread function continously updating the object attributes based on the values read from the flightcontroller.
 ```python
@@ -277,6 +278,13 @@ drone = UAVTracker(gps_sample_time = 0.05, mav_send_sample_time = 0.02) # Create
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True) # Create thread for UAVTracker object
 updateDroneThread.start() # Start thread
 ```
+
+#### Further Reading
+
+[Mavlink messaging and interaction with uORB](https://docs.px4.io/main/en/middleware/mavlink.html)
+[Outdated yet interesting pymavlink doc](https://www.ardusub.com/developers/pymavlink.html)
+[Up to date pymavlink doc](https://mavlink.io/en/mavgen_python/)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GENERAL WORKFLOW -->
