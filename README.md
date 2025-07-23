@@ -450,9 +450,9 @@ MavlinkReceiver::handle_message_fmr_sensors(mavlink_message_t *msg)
 Here "mavlink_fmr_sensors_t" and "mavlink_msg_fmr_sensors_decode" are functions from the generated mavlink_msg_fmr_sensors.h file in build/px4_fmu-v6x_fixedwing/mavlink/common/mavlink_msg_fmr_sensors.h. Finaly add the message handler after line 276:
 
 ```c
-    case MAVLINK_MSG_ID_TEST_MSG:
+    case MAVLINK_MSG_ID_FMR_SENSORS:
 
-        handle_message_test_msg(msg);
+        handle_message_fmr_sensors(msg);
 
         break;
 ```
