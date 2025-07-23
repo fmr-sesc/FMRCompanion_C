@@ -182,11 +182,12 @@ Enter --> Ctrl+X to open and accept licence, enter again to accept default folde
   sudo ~/FMRCompanion/miniconda3/envs/FMRCompanion/pin/python main.py #Runs main.py using the FMRCompanion conda enviroment
   cd
   ```
+  Combination to save and exit nano:
   Ctrl+X --> Y --> Enter to save
 
 ### Setup in QGroundcontrol
 
-1. **Flash the flightcontroller with the desired firmware**
+1. **Flash the flightcontroller with the desired firmware (v1.14.3 custom [build](https://github.com/Mathis-Werner/FMR-PX4-Autopilot) required for custom simulink controllers)**
 2. **Connect the flightcontroller to QGroundcontrol on a PC**
 3. **Go to parameters set and update the following parameters**
   * MAV_2_Config = Ethernet (1000) (Declare Mavlink port 2 as Ethernet)
@@ -281,9 +282,11 @@ updateDroneThread.start() # Start thread
 
 #### Further Reading
 
-[Mavlink messaging and interaction with uORB](https://docs.px4.io/main/en/middleware/mavlink.html)
-[Outdated yet interesting pymavlink doc](https://www.ardusub.com/developers/pymavlink.html)
-[Up to date pymavlink doc](https://mavlink.io/en/mavgen_python/)
+* [Mavlink messaging and interaction with uORB](https://docs.px4.io/main/en/middleware/mavlink.html)
+* [Mavlink messaging using PX4 (Other websites linked there explain process of implementing new mavlink message)](https://docs.px4.io/main/en/mavlink/)
+* [Outdated yet interesting pymavlink doc](https://www.ardusub.com/developers/pymavlink.html)
+* [Up to date pymavlink doc](https://mavlink.io/en/mavgen_python/)
+* [Generate Pymavlink libary from mavlink repo](https://mavlink.io/en/mavgen_python/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -335,7 +338,7 @@ git push
 Which has to be done again so that the PX4-Firmwar references the correct version of the mavlink repo:
 
 ```sh
-cd PX4-Firmware # Go into main PX4-Firmware folder (this can vary based on your folder structure)
+cd FMR-PX4-Autopilot # Go into main PX4-Firmware folder (this can vary based on your folder structure)
 git add src/modules/mavlink/mavlink # Reference correct location of the mavlink submodule
 git commit -am "Some commit message"
 ```
@@ -347,7 +350,7 @@ After this is done all submodule references are updated accordingly referencing 
 This section explains how to include new uORB topics in the firmware create a new mavlink message and set it up so that the recieved data updated the created uORB topic and generate the corresponding python code so that the RasPi can send the newly created mavlink message. (All shell script examples start from ~/) It is assumed that the FMR-PX4-Autopilot repository was cloned accordingly and all submodules are checked out at the corresponding branches. When running git submodule update --init --recursive the submodules are checked out in a detached head stead which is not what we want. To fix this navigate to the corresponding submodule for example mavlink and checkout the right branch:
 
 ```sh
-cd FMR-PX4-Firmware/src/modules/mavlink/mavlink
+cd FMR-PX4-Autopilot/src/modules/mavlink/mavlink # Go into mavlink repository folder (this can vary based on your folder structure)
 git checkout v1.14.3-FMR-mavlink
 cd pymavlink
 git checkout v1.14.3-FMR-pymavlink
@@ -386,6 +389,7 @@ Navigate to the folder FMR-PX4-Autopilot\src\modules\mavlink\mavlink\message_def
 Now the firmware has to be build from the wsl terminal in the FMR-PX4-Firmware folder so that all required header and sourscode files for the following section are generated from the new message definition:
 
 ```sh
+cd FMR-PX4-Autopilot # Go into main PX4-Firmware folder (this can vary based on your folder structure) 
 make px4_fmu-v6x_fixedwing
 ```
 
@@ -394,6 +398,7 @@ make px4_fmu-v6x_fixedwing
 Since we have included a custom message in the common dialect this now needs to be included in the pymavlink firmware. For this we first build the custom dialect python file from in the mavlink repo FMR-PX4-Autopilot\src\modules\mavlink\mavlink:
 
 ```sh
+cd FMR-PX4-Autopilot/src/modules/mavlink/mavlink # Go into mavlink repository folder (this can vary based on your folder structure)
 python3 -m pymavlink.tools.mavgen --lang=Python3 --wire-protocol=1.0 --output=common message_definitions/v1.0/common.xml
 ```
 
