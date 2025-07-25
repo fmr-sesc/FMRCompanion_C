@@ -16,6 +16,8 @@ class UAVTracker:
         self.vehicle = None
         self.latitude = 0.0
         self.longitude = 0.0
+        # Hardcoded number of entries in fmr_sensors mavlink message
+        self.mav_sensor_values = [0] * 5
         self.drone_address = drone_address
         self.logging_enabled = False
         self.gps_sample_time = gps_sample_time
@@ -128,14 +130,13 @@ class UAVTracker:
             await asyncio.sleep(0.001)  # Yield control
 
     async def message_dispatcher(self):
-        x = 0
         while True:
+            # Send fmr_sensors mavlink message
             self.vehicle.mav.fmr_sensors_send(
-            sens_1=math.sin(x),
-            sens_2=2.71,
-            sens_3=2.71,
-            sens_4=2.71,
-            sens_5=2.71
+            sens_1=self.mav_sensor_values[0],
+            sens_2=self.mav_sensor_values[1],
+            sens_3=self.mav_sensor_values[2],
+            sens_4=self.mav_sensor_values[3],
+            sens_5=self.mav_sensor_values[4]
             )
-            x = x + 0.1
             await asyncio.sleep(self.mav_send_sample_time)
