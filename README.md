@@ -335,7 +335,7 @@ git commit -am "Some commit message"
 git push
 ```
 
-Which has to be done again so that the PX4-Firmwar references the correct version of the mavlink repo:
+Which has to be done again so that the PX4-Firmware references the correct version of the mavlink repo:
 
 ```sh
 cd FMR-PX4-Autopilot # Go into main PX4-Firmware folder (this can vary based on your folder structure)
@@ -343,7 +343,7 @@ git add src/modules/mavlink/mavlink # Reference correct location of the mavlink 
 git commit -am "Some commit message"
 ```
 
-After this is done all submodule references are updated accordingly referencing the newest version of the submodules. 
+After this is done all submodule references are updated accordingly referencing the newest version of the submodules. Note that using make to build a new px4 firmware will trigger git to checkout all subrepositorys according to the specified commit. **Hence every bevore a firmware is build all changes have to be added acording to the instructions above before running make so that the changes are included in the new firmware.**
 
 ### PX4 Firmware
 
