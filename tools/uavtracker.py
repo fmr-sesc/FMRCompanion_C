@@ -139,4 +139,5 @@ class UAVTracker:
             sens_4=self.mav_sensor_values[3],
             sens_5=self.mav_sensor_values[4]
             )
+            print(f"Sensor Values: {self.mav_sensor_values}")
             await asyncio.sleep(self.mav_send_sample_time)
