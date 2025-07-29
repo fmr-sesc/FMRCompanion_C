@@ -21,7 +21,7 @@ logger = Logger(usb_path=usb_path)
 drone = UAVTracker(gps_sample_time = 0.05, mav_send_sample_time = 0.02)
 
 # Initialise threads
-sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, sensorReadout_sample_time), daemon=True)
+sensorReadoutThread = threading.Thread(target=sensorReadout, args=(logger, bus, drone, sensorReadout_sample_time), daemon=True)
 updateDroneThread = threading.Thread(target=drone.run_in_thread, daemon=True)
 
 # Start threads
