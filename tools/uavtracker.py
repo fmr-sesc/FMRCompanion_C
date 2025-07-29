@@ -116,16 +116,16 @@ class UAVTracker:
             # Update parameters based on message type
             if msg_type == 'SYSTEM_TIME':
                 self.system_time = datetime.utcfromtimestamp(msg.time_unix_usec / 1e6)
-                print(f"{self.system_time}")
+                #print(f"{self.system_time}")
 
             elif msg_type == 'GPS_RAW_INT':
                 self.latitude = msg.lat
                 self.longitude = msg.lon
-                print(self.latitude, self.longitude)
+                #print(self.latitude, self.longitude)
 
             elif msg_type == 'HEARTBEAT':
                 self.logging_enabled = (msg.system_status == 4)
-                print(f"[Armed] {self.logging_enabled}")
+                #print(f"[Armed] {self.logging_enabled}")
 
             await asyncio.sleep(0.001)  # Yield control
 
@@ -139,5 +139,5 @@ class UAVTracker:
             sens_4=round(self.mav_sensor_values[3],3),
             sens_5=round(self.mav_sensor_values[4],3)
             )
-            print(f"Sensor Values: {self.mav_sensor_values}")
+            print(f"Pressure Sensor 1: {round(self.mav_sensor_values[0],3)}")
             await asyncio.sleep(self.mav_send_sample_time)
