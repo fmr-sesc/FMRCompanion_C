@@ -19,7 +19,7 @@ def sensorReadout(logger, bus, drone, sample_time=0.01, HCLA02X5EB_ADDR=0x78, TC
             pressure = HCL_sens.get_pressure_reading()
             logger.log_data(f"Pressure Sensor {i+1}", pressure)
             drone.mav_sensor_values[i] = pressure
-            #print(f"Written pressure at sensor {i+1} is {drone.mav_sensor_values[i]:.2f} mbar")
+            print(f"Written pressure at sensor {i+1} is {drone.mav_sensor_values[i]:.2f} mbar")
             # Disable channel
             TCA_multiplex.set_channel(i, 0)
         time.sleep(sample_time)
