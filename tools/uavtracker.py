@@ -133,11 +133,11 @@ class UAVTracker:
         while True:
             # Send fmr_sensors mavlink message
             self.vehicle.mav.fmr_sensors_send(
-            sens_1=self.mav_sensor_values[0],
-            sens_2=self.mav_sensor_values[1],
-            sens_3=self.mav_sensor_values[2],
-            sens_4=self.mav_sensor_values[3],
-            sens_5=self.mav_sensor_values[4]
+            sens_1=round(self.mav_sensor_values[0],3),
+            sens_2=round(self.mav_sensor_values[1],3),
+            sens_3=round(self.mav_sensor_values[2],3),
+            sens_4=round(self.mav_sensor_values[3],3),
+            sens_5=round(self.mav_sensor_values[4],3)
             )
             print(f"Sensor Values: {self.mav_sensor_values}")
             await asyncio.sleep(self.mav_send_sample_time)
