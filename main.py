@@ -7,7 +7,7 @@ from tools import detect_USB_drive
 from threads import sensorReadout
 
 # Sample times (s)
-sensorReadout_sample_time = 0.01
+sensorReadout_sample_time = 0.5
 mavlink_sample_time = 0.01
 logger_sample_time = 1
 
