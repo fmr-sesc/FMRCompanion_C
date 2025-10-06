@@ -1,3 +1,4 @@
 [submodule "pymavlink"]
 	path = pymavlink
 	url = https://github.com/fmr-sesc/FMR-pymavlink_C.git
+	branch = v1.14.3-FMR-pymavlink
