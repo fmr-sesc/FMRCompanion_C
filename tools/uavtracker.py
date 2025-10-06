@@ -132,12 +132,12 @@ class UAVTracker:
     async def message_dispatcher(self):
         while True:
             # Send fmr_sensors mavlink message
-            self.vehicle.mav.fmr_sensors_send(
-            sens_1=round(self.mav_sensor_values[0],3),
-            sens_2=round(self.mav_sensor_values[1],3),
-            sens_3=round(self.mav_sensor_values[2],3),
-            sens_4=round(self.mav_sensor_values[3],3),
-            sens_5=round(self.mav_sensor_values[4],3)
-            )
-            print(f"Pressure Sensor 1: {round(self.mav_sensor_values[0],3)}")
-            await asyncio.sleep(self.mav_send_sample_time)
+            #self.vehicle.mav.fmr_sensors_send(
+            #sens_1=round(self.mav_sensor_values[0],3),
+            #sens_2=round(self.mav_sensor_values[1],3),
+            #sens_3=round(self.mav_sensor_values[2],3),
+            #sens_4=round(self.mav_sensor_values[3],3),
+            #sens_5=round(self.mav_sensor_values[4],3)
+            #)
+            #print(f"Pressure Sensor 1: {round(self.mav_sensor_values[0],3)}")
+            #await asyncio.sleep(self.mav_send_sample_time)
