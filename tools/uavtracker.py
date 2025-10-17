@@ -16,8 +16,15 @@ class UAVTracker:
         self.vehicle = None
         self.latitude = 0.0
         self.longitude = 0.0
+        self.altitude_msl = 0.0
+        self.altitude_amsl = 0.0
+        self.airspeed = 0.0
+        self.groundspeed = 0.0
+        self.heading = 0.0
+        self.throttle = 0.0
+        self.climb = 0.0
         # Hardcoded number of entries in fmr_sensors mavlink message
-        self.mav_sensor_values = [0] * 5
+        self.mav_sensor_values = [0] * 6
         self.drone_address = drone_address
         self.logging_enabled = False
         self.gps_sample_time = gps_sample_time
@@ -121,7 +128,21 @@ class UAVTracker:
             elif msg_type == 'GPS_RAW_INT':
                 self.latitude = msg.lat
                 self.longitude = msg.lon
+                self.altitude_msl = msg.alt
                 #print(self.latitude, self.longitude)
+            
+            elif msg_type == 'ALTITUDE':
+                self.altitude_amsl = msg.altitude_amsl
+                #print(self.altitude_amsl)
+            
+            elif msg_type == 'VFR_HUD':
+                self.airspeed = msg.airspeed
+                self.groundspeed = msg.groundspeed
+                self.heading = msg.heading
+                self.throttle = msg.throttle
+                self.climb = msg.climb
+                #print(self.airspeed, self.groundspeed, self.heading, self.throttle, self.climb)    
+        
 
             elif msg_type == 'HEARTBEAT':
                 self.logging_enabled = (msg.system_status == 4)
@@ -132,12 +153,13 @@ class UAVTracker:
     async def message_dispatcher(self):
         while True:
             # Send fmr_sensors mavlink message
-            #self.vehicle.mav.fmr_sensors_send(
-            #sens_1=round(self.mav_sensor_values[0],3),
-            #sens_2=round(self.mav_sensor_values[1],3),
-            #sens_3=round(self.mav_sensor_values[2],3),
-            #sens_4=round(self.mav_sensor_values[3],3),
-            #sens_5=round(self.mav_sensor_values[4],3)
-            #)
+            self.vehicle.mav.fmr_sensors_send(
+            sens_1=round(self.mav_sensor_values[0],3),
+            sens_2=round(self.mav_sensor_values[1],3),
+            sens_3=round(self.mav_sensor_values[2],3),
+            sens_4=round(self.mav_sensor_values[3],3),
+            sens_5=round(self.mav_sensor_values[4],3)
+            )
             #print(f"Pressure Sensor 1: {round(self.mav_sensor_values[0],3)}")
-            #await asyncio.sleep(self.mav_send_sample_time)
+            await asyncio.sleep(self.mav_send_sample_time)
+            
