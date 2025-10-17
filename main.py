@@ -40,6 +40,13 @@ while True:
     if dummy:
         logger.log_data("Latitude", drone.latitude)
         logger.log_data("Longitude", drone.longitude)
+        logger.log_data("Altitude_MSL", drone.altitude_msl)
+        logger.log_data("Altitude_AMSL", drone.altitude_amsl)
+        logger.log_data("Airspeed", drone.airspeed)
+        logger.log_data("Groundspeed", drone.groundspeed)
+        logger.log_data("Heading", drone.heading)
+        logger.log_data("Throttle", drone.throttle)
+        logger.log_data("Climb", drone.climb)
         logger.write_data_to_csv()
         
     previous_logging_state = dummy
